@@ -1,0 +1,18 @@
+{
+    "sign-in": "Sign In",
+    "sign-out": "Sign Out",
+    "all-rights-reserved": "All rights reserved",
+    "welcome": "Welcome to",
+    "description": "TeamMaster ( Tournament Editor And Manager Master) is an application designed to facilitate the organization of groups for WCA",
+    "with-teammaster": "With TeamMaster , you can:",
+    "tag1": "Easily generate score sheets for the first round",
+    "tag2": "Create blank score sheets and PDF files with the defined groups",
+    "tag3": "Quickly create credentials, saving time in preparation",
+    "tag4": "Send emails to competitors directly from the application, facilitating communication and distribution of group information",
+    "more-info": "Explore all the features that TeamMaster  has to offer and simplify the organization of your WCA tournaments!",
+    "competitions" : "Competitions",
+    "name-tournament" : "Name of the tournament",
+    "date-tournament" : "Date of the tournament",
+    "delegate" : "Delegate",
+    "loading"   : "Loading..."
+}
