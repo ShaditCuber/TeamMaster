@@ -20,8 +20,10 @@ const Competitions = () => {
                     <thead className="bg-gray-50">
                         <tr>
                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t("name-tournament")}</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t("date-tournament")}</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t("delegate")}</th>
+                            {/* Ocultar la columna de la fecha en dispositivos móviles */}
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden md:table-cell">{t("date-tournament")}</th>
+                            {/* Ocultar la columna del delegado en dispositivos móviles */}
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden md:table-cell">{t("delegate")}</th>
                         </tr>
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-200">
@@ -30,8 +32,8 @@ const Competitions = () => {
                                 <td className="px-6 py-4 whitespace-nowrap">
                                     <Link to={`/competitions/${competition.id}`} className="text-blue-500 hover:text-blue-700">{competition.name}</Link>
                                 </td>
-                                <td className="px-6 py-4 whitespace-nowrap">{competition.start_date}</td>
-                                <td className="px-6 py-4 whitespace-nowrap">{competition?.delegates[0]?.name}</td>
+                                <td className="px-6 py-4 whitespace-nowrap hidden md:table-cell">{competition.start_date}</td>
+                                <td className="px-6 py-4 whitespace-nowrap hidden md:table-cell">{competition?.delegates[0]?.name}</td>
                             </tr>
                         ))}
                     </tbody>

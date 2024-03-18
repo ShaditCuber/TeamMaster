@@ -22,8 +22,8 @@ export const Home = () => {
     }, []);
 
     return (
-        <div className="mx-auto text-center w-full">
-            <h2 className="text-3xl font-semibold mb-6 text-gray-800">{t("welcome")} <span className="text-red-500">TeamMaster</span></h2>
+        <div className="mx-auto container">
+            <h2 className="text-3xl font-semibold mb-6 text-gray-800">{t("welcome")} <span className="text-red-500">Team</span><span className='text-blue-500'>Master</span></h2>
 
             <p className="text-lg text-gray-700 mb-6 text-justify">
                 {t("description")} <a href="https://www.worldcubeassociation.org/" target='_blank'>WCA (World Cube Association)</a>

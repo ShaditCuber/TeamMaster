@@ -10,9 +10,12 @@
     "tag3": "Quickly create credentials, saving time in preparation",
     "tag4": "Send emails to competitors directly from the application, facilitating communication and distribution of group information",
     "more-info": "Explore all the features that TeamMaster  has to offer and simplify the organization of your WCA tournaments!",
-    "competitions" : "Competitions",
-    "name-tournament" : "Name of the tournament",
-    "date-tournament" : "Date of the tournament",
-    "delegate" : "Delegate",
-    "loading"   : "Loading..."
+    "competitions": "Tournaments",
+    "name-tournament": "Name of the tournament",
+    "date-tournament": "Date of the tournament",
+    "delegate": "Delegate",
+    "loading": "Loading...",
+    "lang-en": "English",
+    "lang-es": "Spanish",
+    "change-language": "Change language"
 }

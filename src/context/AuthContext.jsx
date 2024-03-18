@@ -36,8 +36,6 @@ const UsuarioProvider = (props) => {
 
         if (expire) {
             const expireDate = new Date(expire);
-            console.log(expireDate)
-            console.log(new Date())
 
             if (expireDate < new Date()) {
                 clearStorage();

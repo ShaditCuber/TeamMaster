@@ -14,5 +14,8 @@
     "name-tournament": "Nombre del torneo",
     "date-tournament": "Fecha del torneo",
     "delegate": "Delegado",
-    "loading": "Cargando..."
+    "loading": "Cargando...",
+    "lang-en": "Inglés",
+    "lang-es": "Español",
+    "change-language": "Cambiar idioma"
 }
