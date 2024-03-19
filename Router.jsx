@@ -4,6 +4,7 @@ import { Home } from "./src/pages/Home";
 import Error from "./src/pages/Error";
 import Layout from "./src/layout/Layout";
 import Competitions from "./src/pages/Competitions";
+import Competition from "./src/pages/Competition";
 
 
 
@@ -19,7 +20,7 @@ const RouterApp = () => {
         <Routes>
             <Route path="/" element={<Layout><Home /></Layout>} />
             <Route path="/competitions" element={<ProtectedRoute><Competitions /></ProtectedRoute>} />
-            <Route path="/competitions/:id" element={<ProtectedRoute><Competitions /></ProtectedRoute>} />
+            <Route path="/competitions/:id" element={<ProtectedRoute><Competition /></ProtectedRoute>} />
             <Route path="*" element={<Layout><Error /></Layout>} />
         </Routes>
     )
