@@ -12,10 +12,22 @@ const fetchCompetitions = async (date) => {
     return callWCA('competitions?' + new URLSearchParams(params).toString());
 }
 
+const fetchCompetition = async (competitionId) => {
+    return callWCA(`competitions/${competitionId}/wcif`);
+}
+
 export const useCompetitions = () => {
     return useQuery({
         queryKey: ['competitions'],
         queryFn: fetchCompetitions,
+        keepPreviousData: true,
+    });
+}
+
+export const useCompetition = (competitionId) => {
+    return useQuery({
+        queryKey: ['competition', competitionId],
+        queryFn: fetchCompetition,
         keepPreviousData: true,
     });
 }
