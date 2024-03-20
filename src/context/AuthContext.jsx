@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useMemo, useEffect } from "react";
 import { clearStorage, getToken } from "../util/util";
-import { WCA_BASE_URL, WCA_CLIENT_ID, WCA_REDIRECT_URI } from '../Const/Const';
+import { WCA_BASE_URL, WCA_CLIENT_ID } from '../Const/Const';
 const UsuarioContext = createContext();
 
 const UsuarioProvider = (props) => {
@@ -18,7 +18,7 @@ const UsuarioProvider = (props) => {
             const params = new URLSearchParams({
                 client_id: WCA_CLIENT_ID,
                 response_type: 'token',
-                redirect_uri: WCA_REDIRECT_URI,
+                redirect_uri: window.location.origin,
                 scope: 'manage_competitions',
             });
             window.location = `${WCA_BASE_URL}/oauth/authorize?${params.toString()}`;
