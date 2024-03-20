@@ -1,6 +1,5 @@
 import { callWCA } from "../util/clienteAxios";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { WCA_BASE_URL } from '../Const/Const';
 
 const fetchCompetitions = async (date) => {
     const oneWeekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);

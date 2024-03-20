@@ -1,6 +1,5 @@
 import React, { createContext, useContext, useState, useMemo, useEffect } from "react";
 import { clearStorage, getToken } from "../util/util";
-import { WCA_BASE_URL, WCA_CLIENT_ID } from '../Const/Const';
 const UsuarioContext = createContext();
 
 const UsuarioProvider = (props) => {
@@ -14,14 +13,18 @@ const UsuarioProvider = (props) => {
 
 
     const signIn = async () => {
+
+        const client_id = import.meta.env.VITE_STATE === 'production' ? import.meta.env.VITE_WCA_CLIENT_ID_PROD : import.meta.env.VITE_WCA_CLIENT_ID_DEV;
+
+
         try {
             const params = new URLSearchParams({
-                client_id: WCA_CLIENT_ID,
+                client_id: client_id,
                 response_type: 'token',
                 redirect_uri: window.location.origin,
                 scope: 'manage_competitions',
             });
-            window.location = `${WCA_BASE_URL}/oauth/authorize?${params.toString()}`;
+            window.location = `${import.meta.env.VITE_WCA_BASE_URL}/oauth/authorize?${params.toString()}`;
         }
         catch (error) {
             console.error('Error signing in', error);

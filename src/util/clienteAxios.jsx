@@ -1,13 +1,12 @@
 import axios from "axios";
 import { getToken, clearStorage } from "./util";
-import { WCA_BASE_URL } from '../Const/Const';
 
 const clienteAxios = axios.create({
-    baseURL: WCA_BASE_URL,
+    baseURL: import.meta.env.VITE_WCA_BASE_URL,
 });
 
 export const callWCA = async (url) => {
-    url = `${WCA_BASE_URL}/api/v0/${url}`;
+    url = `/api/v0/${url}`;
     const response = await clienteAxios.get(url);
     return response.data;
 }
