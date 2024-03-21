@@ -29,7 +29,7 @@ const Competitions = () => {
                         </tr>
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-200">
-                        {data.map((competition) => (
+                        {data?.length > 0 ? data?.map((competition) => (
                             <tr key={competition.id} className="hover:bg-gray-300 cursor-pointer">
                                 <td className="px-6 py-4 whitespace-nowrap">
                                     <Link state={{ competition_id: competition.id }} to={`/competitions/${competition.id}`} className="text-blue-500 hover:text-blue-700">{competition.name}</Link>
@@ -37,7 +37,9 @@ const Competitions = () => {
                                 <td className="px-6 py-4 whitespace-nowrap hidden md:table-cell">{competition.start_date}</td>
                                 <td className="px-6 py-4 whitespace-nowrap hidden md:table-cell">{competition?.delegates[0]?.name}</td>
                             </tr>
-                        ))}
+                        )) : <tr>
+                            <td colSpan="3" className="px-6 py-4 whitespace-nowrap text-center">{t("no-competitions")}</td>
+                        </tr>}
                     </tbody>
                 </table>
             </div>

@@ -23,5 +23,6 @@
     "categories": "Categorías",
     "groups-per-round": "Grupos por ronda",
     "competitors-average": "Promedio de competidores por grupo",
-    "generate-groups": "Generar grupos"
+    "generate-groups": "Generar grupos",
+    "no-competitions": "No hay torneos organizados por este usuario"
 }
