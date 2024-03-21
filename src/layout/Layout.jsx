@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useUsuario } from '../context/AuthContext'
 import { use } from 'i18next';
+import { IconTeamMaster } from '../Icons/Icons';
 
 const Layout = ({ children }) => {
 
@@ -33,7 +34,12 @@ const Layout = ({ children }) => {
         <div className="bg-gray-100 flex flex-col max-h">
             <div className="flex flex-col md:flex-row h-screen">
                 <div className="bg-opacity-90 bg-black p-4 md:w-1/6 flex flex-col justify-between">
-                    <a href={user?.token ? "/competitions" : "/"} className="text-2xl font-semibold mb-4 text-red-500">Team<span className="text-blue-500">Master</span></a>
+                    <div className="flex items-center justify-center">
+                        <IconTeamMaster width={40} height={40} />
+                        <a href={user?.token ? "/competitions" : "/"} className="mt-4 text-3xl font-semibold mb-4 text-red-500 inline-flex items-center mx-4">
+                            Team<span className="text-blue-500">Master</span>
+                        </a>
+                    </div>
                     {user?.token != null ? (
                         <button onClick={handleSignOut} className="block py-2 px-4 rounded-lg bg-white text-blue-500 font-semibold hover:bg-gray-200">{t("sign-out")}</button>
                     ) : (
