@@ -1,7 +1,7 @@
 import { callWCA } from "../util/clienteAxios";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
-const fetchCompetitions = async (date) => {
+const fetchCompetitions = async () => {
     const oneWeekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
     const params = {
         "managed_by_me": true,
@@ -26,7 +26,7 @@ export const useCompetitions = () => {
 export const useCompetition = (competitionId) => {
     return useQuery({
         queryKey: ['competition', competitionId],
-        queryFn: fetchCompetition,
+        queryFn: () => fetchCompetition(competitionId),
         keepPreviousData: true,
     });
 }

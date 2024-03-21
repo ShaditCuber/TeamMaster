@@ -16,5 +16,12 @@
     "loading": "Loading...",
     "lang-en": "English",
     "lang-es": "Spanish",
-    "change-language": "Change language"
+    "change-language": "Change language",
+    "back": "Back",
+    "events": "Events",
+    "competitors": "Competitors",
+    "categories": "Categories",
+    "groups-per-round": "Groups per round",
+    "competitors-average": "Competitors Average",
+    "generate-groups": "Generate Groups"
 }

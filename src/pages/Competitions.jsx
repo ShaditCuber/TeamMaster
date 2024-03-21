@@ -1,12 +1,14 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import Loader from "../components/Loader/Loader";
 import { useCompetitions } from "../queries/competitions";
 import { useTranslation } from "react-i18next";
+import i18n from "i18next";
 
 const Competitions = () => {
     const { data, isLoading } = useCompetitions();
     const { t } = useTranslation('global');
+
 
     if (isLoading) {
         return <Loader />;

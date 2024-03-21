@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useUsuario } from '../context/AuthContext'
+import { use } from 'i18next';
 
 const Layout = ({ children }) => {
 
@@ -15,6 +16,18 @@ const Layout = ({ children }) => {
     const handleSignOut = () => {
         signOut();
     }
+
+    // guardar el idioma en el localstorage
+    useEffect(() => {
+        const savedLanguage = localStorage.getItem('i18nextLng');
+        if (savedLanguage) {
+            i18n.changeLanguage(savedLanguage);
+        }
+    }, [i18n]);
+
+    useEffect(() => {
+        localStorage.setItem('i18nextLng', i18n.language);
+    }, [i18n.language]);
 
     return (
         <div className="bg-gray-100 flex flex-col max-h">
