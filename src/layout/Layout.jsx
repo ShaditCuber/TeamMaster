@@ -31,7 +31,7 @@ const Layout = ({ children }) => {
     }, [i18n.language]);
 
     return (
-        <div className="bg-gray-100 flex flex-col max-h">
+        <div className="bg-gray-100 flex flex-col h-max">
             <div className="flex flex-col md:flex-row h-screen">
                 <div className="bg-opacity-90 bg-black p-4 md:w-1/6 flex flex-col justify-between">
                     <div className="flex items-center justify-center">

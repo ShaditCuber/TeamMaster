@@ -1,24 +1,31 @@
 import React, { useEffect } from 'react';
-import jsonData from '../test/CubiTome.json';
 import { useCompetition } from '../queries/competitions';
 import { useLocation, Link } from 'react-router-dom';
 import Loader from '../components/Loader/Loader';
 import { useTranslation } from 'react-i18next';
+import { useGenerateGroups } from '../queries/groups';
+import PersonTable from '../components/PersonTable/PersonTable';
 
 function Competion() {
 
     const { t } = useTranslation('global');
 
+    const [persons, setPersons] = React.useState([]); // data.persons
     const [countPersons, setCountPersons] = React.useState(0);
     const [events, setEvents] = React.useState([]);
     const [competitorsByEvent, setCompetitorsByEvent] = React.useState({});
     const [groupsByEvent, setGroupsByEvent] = React.useState([]);
     const [averageByEvent, setAverageByEvent] = React.useState([]);
     const [xd, setXd] = React.useState('');
-
+    const mutationGenerateGroups = useGenerateGroups();
+    let competition_id;
 
     const location = useLocation();
-    const { competition_id } = location.state;
+    try {
+        competition_id = location.state.competition_id;
+    } catch (error) {
+        window.location = '/competitions';
+    }
     const { data, isLoading } = useCompetition(competition_id);
 
     useEffect(() => {
@@ -72,6 +79,7 @@ function Competion() {
             [eventId]: value,
         });
 
+
         // Recalcular el promedio solo para el evento específico que está cambiando
         const updatedAverageByEvent = {
             ...averageByEvent,
@@ -85,13 +93,16 @@ function Competion() {
         window.location = '/competitions';
     }
 
-    const generateGroup = () => {
+    const generateGroup = async () => {
 
-        setXd('Generando Grupos...');
+        // Necesito llamar a otra api y enviar el json , agregando los grupos al json
+        // Luego de eso, mostrar los grupos en la pantalla
+        console.log(groupsByEvent)
+        groupsByEvent.criteria = 'random';
+        const requestData = { 'wcif': data, 'data': groupsByEvent }
+        const data_groups = await mutationGenerateGroups.mutateAsync(requestData);
 
-        setTimeout(() => {
-            setXd('Ya no se que poner aqui, pero ya se generaron los grupos :v');
-        }, 2000);
+        setPersons(data_groups.persons);
 
     }
 
@@ -102,7 +113,7 @@ function Competion() {
 
     return (
         <div className="container mx-auto px-4 py-8">
-            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full" onClick={() => returnToCompetitions()}>
+            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full" onClick={() => returnToCompetitions()}>
                 {t("back")}
             </button>
             <h1 className="text-2xl font-bold mb-4 mt-4">{data ? data.name : "Loading..."}</h1>
@@ -116,49 +127,53 @@ function Competion() {
                     <p>{countPersons}</p>
                 </div>
             </div>
-            <table className="table-auto w-full border-collapse border border-gray-800">
-                <thead>
-                    <tr className="bg-gray-200">
-                        <th className="px-4 py-2">{t("categories")}</th>
-                        {events.map(eventId => (
-                            <th key={`${eventId}_event`} className="px-4 py-2 border border-gray-800">{eventId}</th>
-                        ))}
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td className="px-4 py-2 font-semibold border border-gray-800">{t("categories")}</td>
-                        {events.map(eventId => (
-                            <td key={eventId} className="px-4 py-2 border border-gray-800">{competitorsByEvent[eventId] || 0}</td>
-                        ))}
-                    </tr>
-                    <tr>
-                        <td className="px-4 py-2 font-semibold border border-gray-800">{t("groups-per-round")}</td>
-                        {events.map(eventId => (
-                            <td key={eventId} className="px-4 py-2 border border-gray-800">
-                                <input
-                                    type="number"
-                                    className="w-full px-2 py-1"
-                                    value={groupsByEvent[eventId]}
-                                    min={1}
-                                    onChange={e => handleGroupsChange(eventId, e)}
-                                />
-                            </td>
-                        ))}
-                    </tr>
-                    <tr>
-                        <td className="px-4 py-2 font-semibold border border-gray-800">{t("competitors-average")}</td>
-                        {events.map(eventId => (
-                            <td key={eventId} className="px-4 py-2 border border-gray-800">{averageByEvent[eventId] || 0}</td>
-                        ))}
-                    </tr>
-                </tbody>
-            </table>
-            <button class="bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded mt-4 w-full" onClick={() => generateGroup()}>
+            <div className="overflow-x-auto">
+                <table className="table-auto min-w-full border-collapse border border-gray-800">
+                    <thead>
+                        <tr className="bg-gray-200">
+                            <th className="px-4 py-2">{t("categories")}</th>
+                            {events.map(eventId => (
+                                <th key={`${eventId}_event`} className="px-4 py-2 border border-gray-800">{eventId}</th>
+                            ))}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td className="px-4 py-2 font-semibold border border-gray-800">{t("categories")}</td>
+                            {events.map(eventId => (
+                                <td key={eventId} className="px-4 py-2 border border-gray-800">{competitorsByEvent[eventId] || 0}</td>
+                            ))}
+                        </tr>
+                        <tr>
+                            <td className="px-4 py-2 font-semibold border border-gray-800">{t("groups-per-round")}</td>
+                            {events.map(eventId => (
+                                <td key={eventId} className="px-4 py-2 border border-gray-800">
+                                    <input
+                                        type="number"
+                                        className="w-full px-2 py-1"
+                                        value={groupsByEvent[eventId]}
+                                        min={1}
+                                        onChange={e => handleGroupsChange(eventId, e)}
+                                    />
+                                </td>
+                            ))}
+                        </tr>
+                        <tr>
+                            <td className="px-4 py-2 font-semibold border border-gray-800">{t("competitors-average")}</td>
+                            {events.map(eventId => (
+                                <td key={eventId} className="px-4 py-2 border border-gray-800">{averageByEvent[eventId] || 0}</td>
+                            ))}
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <button className="bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded mt-4 w-full" onClick={() => generateGroup()}>
                 {t("generate-groups")}
             </button>
-            <div className='text-xl mt-5'>
-                {xd}
+            <div className=''>
+                <>
+                    <PersonTable persons={persons} events={data.events} />
+                </>
             </div>
         </div>
     );

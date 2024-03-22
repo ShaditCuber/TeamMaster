@@ -5,6 +5,12 @@ const clienteAxios = axios.create({
     baseURL: import.meta.env.VITE_WCA_BASE_URL,
 });
 
+const backUrl = import.meta.env.VITE_STATE === "development" ? import.meta.env.VITE_BACK_BASE_URL_DEV : import.meta.env.VITE_BACK_BASE_URL_PROD;
+
+export const clienteBack = axios.create({
+    baseURL: backUrl,
+});
+
 export const callWCA = async (url) => {
     url = `/api/v0/${url}`;
     const response = await clienteAxios.get(url);
