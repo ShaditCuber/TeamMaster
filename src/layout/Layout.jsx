@@ -1,22 +1,12 @@
 import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useUsuario } from '../context/AuthContext'
-import { use } from 'i18next';
 import { IconTeamMaster } from '../Icons/Icons';
 
 const Layout = ({ children }) => {
 
     const [t, i18n] = useTranslation('global');
     const { signIn, user, signOut } = useUsuario();
-
-
-    const handleSignIn = () => {
-        signIn();
-    }
-
-    const handleSignOut = () => {
-        signOut();
-    }
 
     // guardar el idioma en el localstorage
     useEffect(() => {
@@ -31,8 +21,8 @@ const Layout = ({ children }) => {
     }, [i18n.language]);
 
     return (
-        <div className="bg-gray-100 flex flex-col h-max">
-            <div className="flex flex-col md:flex-row h-screen">
+        <div className="bg-gray-100 flex flex-col h-screen">
+            <div className="flex flex-col md:flex-row h-full">
                 <div className="bg-opacity-90 bg-black p-4 md:w-1/6 flex flex-col justify-between">
                     <div className="flex items-center justify-center">
                         <IconTeamMaster width={40} height={40} />
@@ -41,9 +31,9 @@ const Layout = ({ children }) => {
                         </a>
                     </div>
                     {user?.token != null ? (
-                        <button onClick={handleSignOut} className="block py-2 px-4 rounded-lg bg-white text-blue-500 font-semibold hover:bg-gray-200">{t("sign-out")}</button>
+                        <button onClick={() => signOut()} className="block py-2 px-4 rounded-lg bg-white text-blue-500 font-semibold hover:bg-gray-200">{t("sign-out")}</button>
                     ) : (
-                        <button onClick={handleSignIn} className="block py-2 px-4 rounded-lg bg-white text-blue-500 font-semibold hover:bg-gray-200">{t("sign-in")}</button>
+                        <button onClick={() => signIn()} className="block py-2 px-4 rounded-lg bg-white text-blue-500 font-semibold hover:bg-gray-200">{t("sign-in")}</button>
                     )}
                     <div className="flex flex-col mt-4">
                         <p className="text-white font-semibold mb-2">{t("change-language")}</p>
@@ -51,7 +41,7 @@ const Layout = ({ children }) => {
                         <button onClick={() => i18n.changeLanguage("en")} className={`py-2 px-4 rounded-lg bg-white text-blue-500 font-semibold hover:bg-gray-200 ${i18n.language === 'en' ? 'bg-blue-200' : ''}`}>{t("lang-en")}</button>
                     </div>
                 </div>
-                <div className="flex-1 flex my-10 justify-center w-3/4 mx-auto">
+                <div className="flex-1 flex my-10 justify-center w-3/4 mx-auto overflow-y-auto">
                     {children}
                 </div>
             </div >

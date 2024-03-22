@@ -24,5 +24,16 @@
     "groups-per-round": "Grupos por ronda",
     "competitors-average": "Promedio de competidores por grupo",
     "generate-groups": "Generar grupos",
-    "no-competitions": "No hay torneos organizados por este usuario"
+    "no-competitions": "No hay torneos organizados por este usuario",
+    "random": "Random",
+    "equilibrated": "Equilibrado",
+    "speedFirst": "Rapidos Primero",
+    "speedLast": "Rapidos Ultimo",
+    "filter-by-name": "Filtrar por nombre",
+    "name": "Nombre",
+    "age": "Edad",
+    "show-wca-id": "Mostrar ID WCA en ScoreSheet",
+    "select-language": "Seleccionar idioma en ScoreSheet",
+    "generate-score-sheet": "Generar ScoreSheet",
+    "download-images-competitors": "Descargar imágenes de competidores"
 }

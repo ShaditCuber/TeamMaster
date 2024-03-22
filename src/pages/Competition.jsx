@@ -10,7 +10,7 @@ function Competion() {
 
     const { t } = useTranslation('global');
 
-    const [persons, setPersons] = React.useState([]); // data.persons
+    const [wcif, setWcif] = React.useState([]);
     const [countPersons, setCountPersons] = React.useState(0);
     const [events, setEvents] = React.useState([]);
     const [competitorsByEvent, setCompetitorsByEvent] = React.useState({});
@@ -18,6 +18,7 @@ function Competion() {
     const [averageByEvent, setAverageByEvent] = React.useState([]);
     const [xd, setXd] = React.useState('');
     const mutationGenerateGroups = useGenerateGroups();
+    const [groupingOption, setGroupingOption] = React.useState('random');
     let competition_id;
 
     const location = useLocation();
@@ -95,16 +96,16 @@ function Competion() {
 
     const generateGroup = async () => {
 
-        // Necesito llamar a otra api y enviar el json , agregando los grupos al json
-        // Luego de eso, mostrar los grupos en la pantalla
         console.log(groupsByEvent)
-        groupsByEvent.criteria = 'random';
+        console.log(groupingOption)
+        groupsByEvent.criteria = groupingOption;
         const requestData = { 'wcif': data, 'data': groupsByEvent }
         const data_groups = await mutationGenerateGroups.mutateAsync(requestData);
-
-        setPersons(data_groups.persons);
+        setWcif(data_groups);
 
     }
+
+
 
 
     if (isLoading) {
@@ -167,13 +168,34 @@ function Competion() {
                     </tbody>
                 </table>
             </div>
-            <button className="bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded mt-4 w-full" onClick={() => generateGroup()}>
-                {t("generate-groups")}
-            </button>
-            <div className=''>
-                <>
-                    <PersonTable persons={persons} events={data.events} />
-                </>
+
+            <div className='flex flex-row gap-10 w-full'>
+                <select
+                    className="w-1/2 px-4 py-2 mt-4 text-gray-700 bg-white border border-gray-300 rounded-md focus:border-blue-500 focus:outline-none focus:ring h-10"
+                    name="groupingOption"
+                    id="groupingOption"
+                    onChange={(e) => setGroupingOption(e.target.value)}
+                >
+                    <option value="random">{t("random")}</option>
+                    <option value="equilibrated">{t("equilibrated")}</option>
+                    <option value="speedFirst">{t("speedFirst")}</option>
+                    <option value="speedLast">{t("speedLast")}</option>
+                </select>
+                <button className="bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded mt-4 mr-2 w-1/2 h-10" onClick={() => generateGroup()}>
+                    {t("generate-groups")}
+                </button>
+
+            </div>
+
+            <div className='mt-4'>
+                {
+                    wcif?.persons?.length > 0 ?
+                        <PersonTable wcif={wcif} events={data.events} /> :
+                        <div>
+
+                        </div>
+
+                }
             </div>
         </div>
     );
