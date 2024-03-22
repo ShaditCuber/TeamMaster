@@ -181,6 +181,7 @@ const PersonTable = ({ wcif, events }) => {
                     ))}
                 </tbody>
             </table>
+            
 
             <div className='flex flex-row'>
                 <div className="mt-4 w-1/3">
