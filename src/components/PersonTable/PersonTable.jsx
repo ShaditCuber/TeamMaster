@@ -18,6 +18,13 @@ const PersonTable = ({ wcif, events }) => {
 
 
     const handleInputChange = (personName, eventId, value) => {
+        if (value === '') {
+            value = undefined;
+        }
+        if (value < 1) {
+            value = 1;
+        }
+
         setEditedGroups(prevState => ({
             ...prevState,
             [`${personName}-${eventId}`]: value
@@ -110,7 +117,7 @@ const PersonTable = ({ wcif, events }) => {
         await Promise.all(avatars.map(async (person) => {
             const response = await fetch(person.avatar.url, {
                 "headers": {
-                    "Access-Control-Allow-Origin" : "*"
+                    "Access-Control-Allow-Origin": "*"
                 }
             });
             const blob = await response.blob();
@@ -127,7 +134,7 @@ const PersonTable = ({ wcif, events }) => {
         link.click();
         document.body.removeChild(link);
         URL.revokeObjectURL(url);
-      
+
     }
 
 
@@ -145,7 +152,7 @@ const PersonTable = ({ wcif, events }) => {
                 </div>
                 <div className="w-1/2">
                     {/* Boton para descargar las imagenes  */}
-                    <button className="py-2 px-4 rounded-lg bg-blue-500 text-white font-semibold hover:bg-blue-600" onClick={() => downloadImages()}>{t("download-images-competitors")}</button>
+                    <button className="py-2 px-4 rounded-lg bg-blue-500 text-white font-semibold hover:bg-blue-600 hidden" onClick={() => downloadImages()}>{t("download-images-competitors")}</button>
                 </div>
             </div>
             <table className='min-w-full table-auto mt-4'>
@@ -174,6 +181,7 @@ const PersonTable = ({ wcif, events }) => {
                                         className={`w-16 p-2 rounded border ${getEventGroup(person, event) === '' ? 'border-dotted border-red-300' : 'border'}`}
                                         value={getEventGroup(person, event)}
                                         onChange={(e) => handleInputChange(person.name, event.id, e.target.value)}
+                                        min={1}
                                     />
                                 </td>
                             ))}
@@ -198,7 +206,7 @@ const PersonTable = ({ wcif, events }) => {
                         <option value="es">Español</option>
                     </select>
                 </div>
-                <div className="mt-4 w-1/3">
+                <div className="mt-4 w-1/3 hidden">
                     <button onClick={generateScoreSheet} className="py-2 px-4 rounded-lg bg-blue-500 text-white font-semibold hover:bg-blue-600">{t("generate-score-sheet")}</button>
                 </div>
             </div>
