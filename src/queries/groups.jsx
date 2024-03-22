@@ -5,7 +5,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
 
 const generateGroups = async (data) => {
-    const response = await clienteBack.post(`generateGroups`, data);
+    const response = await clienteBack.post(`groups/generateGroups`, data);
     return response.data;
 }
 
