@@ -32,11 +32,13 @@
     "filter-by-name": "Filtrar por nombre",
     "name": "Nombre",
     "age": "Edad",
-    "show-wca-id": "Mostrar ID WCA en ScoreSheet",
-    "select-language": "Seleccionar idioma en ScoreSheet",
-    "generate-score-sheet": "Generar ScoreSheet",
+    "show-wca-id": "Mostrar ID WCA en ScoreCard",
+    "select-language": "Seleccionar idioma en ScoreCard",
+    "generate-scoreCard": "Generar ScoreCard",
     "obtain-images-competitors": "Obtener imágenes de competidores",
-    "download-zip" : "Descargar ZIP",
-    "download-scoresheet": "Descargar ScoreSheet",
-    "download-empty-scoresheet": "Descargar ScoreSheet en blanco"
+    "download-zip": "Descargar ZIP",
+    "download-scoreCard": "Descargar ScoreCard",
+    "download-empty-scoreCard": "Descargar ScoreCard en Blanco",
+    "download-groups": "Descargar Grupos",
+    "download-groups-csv" : "Descargar Grupos en CSV"
 }

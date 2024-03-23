@@ -8,14 +8,16 @@ const PersonTable = ({ wcif, events, groupsByEvent }) => {
 
     const [editedGroups, setEditedGroups] = useState({});
     const [showWcaId, setShowWcaId] = useState(true);
-    const [languageScoreSheet, setLanguageScoreSheet] = useState('es');
+    const [languageScoreCard, setLanguageScoreCard] = useState('es');
     const [filterName, setFilterName] = useState('');
     const [sortConfig, setSortConfig] = useState({ key: 'name', direction: 'ascending' });
     const [urlZip, setUrlZip] = useState('');
-    const [urlScoreSheet, setUrlScoreSheet] = useState('');
-    const [urlEmptyScoreSheet, setUrlEmptyScoreSheet] = useState('');
+    const [urlScoreCard, setUrlScoreCard] = useState('');
+    const [urlEmptyScoreCard, setUrlEmptyScoreCard] = useState('');
+    const [urlGroupsPDF, setUrlGroupsPDF] = useState('');
+    const [urlGroupCSV, setUrlGroupCSV] = useState('');
 
-    const mutateGenerateScoreSheet = useGenerateScoreSheet();
+    const mutateGenerateScoreCard = useGenerateScoreSheet();
     const mutateAvatarZip = useAvatarZip();
 
     const { t } = useTranslation('global');
@@ -118,12 +120,14 @@ const PersonTable = ({ wcif, events, groupsByEvent }) => {
         return acc;
     }, {});
 
-    const generateScoreSheet = async () => {
+    const generateScoreCard = async () => {
 
-        setUrlEmptyScoreSheet('');
-        setUrlScoreSheet('');
+        setUrlEmptyScoreCard('');
+        setUrlScoreCard('');
+        setUrlGroupsPDF('');
+        setUrlGroupCSV('');
 
-        wcif.lang = languageScoreSheet;
+        wcif.lang = languageScoreCard;
 
 
         wcif.groups = groupsByEvent;
@@ -137,9 +141,11 @@ const PersonTable = ({ wcif, events, groupsByEvent }) => {
         }, {});
 
         // llamamos a papi
-        const response = await mutateGenerateScoreSheet.mutateAsync(wcif);
-        setUrlEmptyScoreSheet(response.emptyScoreSheet);
-        setUrlScoreSheet(response.scoreSheet);
+        const response = await mutateGenerateScoreCard.mutateAsync(wcif);
+        setUrlEmptyScoreCard(response.emptyScoreCard);
+        setUrlScoreCard(response.scoreCard);
+        setUrlGroupsPDF(response.groupsPDF);
+        setUrlGroupCSV(response.groupsCSV);
 
     }
 
@@ -236,39 +242,63 @@ const PersonTable = ({ wcif, events, groupsByEvent }) => {
                     <label>{t("select-language")}</label>
                     <select
                         className="px-2 py-1 border rounded"
-                        value={languageScoreSheet}
-                        onChange={(e) => setLanguageScoreSheet(e.target.value)}
+                        value={languageScoreCard}
+                        onChange={(e) => setLanguageScoreCard(e.target.value)}
                     >
                         <option value="en">English</option>
                         <option value="es">Español</option>
                     </select>
                 </div>
                 <div className="mt-4 w-1/3">
-                    <button onClick={generateScoreSheet} className="py-2 px-4 rounded-lg bg-blue-500 text-white font-semibold hover:bg-blue-600">{t("generate-score-sheet")}</button>
+                    <button onClick={generateScoreCard} className="py-2 px-4 rounded-lg bg-blue-500 text-white font-semibold hover:bg-blue-600">{t("generate-scoreCard")}</button>
                 </div>
             </div>
             <div className="mb-4">
-                {urlScoreSheet && (
+                {urlScoreCard && (
                     <a
-                        href={urlScoreSheet}
-                        download="scoresheet.pdf"
+                        href={urlScoreCard}
+                        download="scoreCard.pdf"
                         className="block py-2 px-4 rounded-lg bg-blue-500 text-white font-semibold hover:bg-blue-600"
                     >
-                        {t("download-scoresheet")}
+                        {t("download-scoreCard")}
                     </a>
                 )}
             </div>
-            <div>
-                {urlEmptyScoreSheet && (
+            <div className='mb-4'>
+                {urlEmptyScoreCard && (
                     <a
-                        href={urlEmptyScoreSheet}
-                        download="empty-scoresheet.pdf"
+                        href={urlEmptyScoreCard}
+                        download="empty-scoreCard.pdf"
                         className="block py-2 px-4 rounded-lg bg-blue-500 text-white font-semibold hover:bg-blue-600"
                     >
-                        {t("download-empty-scoresheet")}
+                        {t("download-empty-scoreCard")}
                     </a>
                 )}
             </div>
+            <div className='mb-4'>
+                {urlGroupsPDF && (
+                    <a
+                        href={urlGroupsPDF}
+                        download="groups.pdf"
+                        className="block py-2 px-4 rounded-lg bg-blue-500 text-white font-semibold hover:bg-blue-600"
+                    >
+                        {t("download-groups")}
+                    </a>
+                )}
+            </div>
+            <div className='mb-4'>
+                {urlGroupCSV && (
+                    <a
+                        href={urlGroupCSV}
+                        download="groups.csv"
+                        className="block py-2 px-4 rounded-lg bg-blue-500 text-white font-semibold hover:bg-blue-600"
+                    >
+                        {t("download-groups-csv")}
+                    </a>
+                )
+                }
+            </div>
+
 
         </div>
     );
