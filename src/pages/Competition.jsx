@@ -190,7 +190,7 @@ function Competion() {
             <div className='mt-4'>
                 {
                     wcif?.persons?.length > 0 ?
-                        <PersonTable wcif={wcif} events={data.events} /> :
+                        <PersonTable wcif={wcif} events={data.events} groupsByEvent={groupsByEvent} /> :
                         <div>
 
                         </div>

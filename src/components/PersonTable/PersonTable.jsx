@@ -1,29 +1,41 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAvatarZip } from '../../queries/images';
-import JSZip from 'jszip';
+import { useGenerateScoreSheet } from '../../queries/groups';
 
-const PersonTable = ({ wcif, events }) => {
+
+const PersonTable = ({ wcif, events, groupsByEvent }) => {
 
     const [editedGroups, setEditedGroups] = useState({});
-    const [showWcaId, setShowWcaId] = useState(false);
-    const [languageScoreSheet, setLanguageScoreSheet] = useState('en');
+    const [showWcaId, setShowWcaId] = useState(true);
+    const [languageScoreSheet, setLanguageScoreSheet] = useState('es');
     const [filterName, setFilterName] = useState('');
     const [sortConfig, setSortConfig] = useState({ key: 'name', direction: 'ascending' });
+    const [urlZip, setUrlZip] = useState('');
+    const [urlScoreSheet, setUrlScoreSheet] = useState('');
+    const [urlEmptyScoreSheet, setUrlEmptyScoreSheet] = useState('');
 
-
+    const mutateGenerateScoreSheet = useGenerateScoreSheet();
     const mutateAvatarZip = useAvatarZip();
 
     const { t } = useTranslation('global');
 
 
     const handleInputChange = (personName, eventId, value) => {
+
+        // let intValue = parseInt(value);
+
         if (value === '') {
             value = undefined;
         }
         if (value < 1) {
             value = 1;
         }
+
+        if (value > groupsByEvent[eventId]) {
+            value = groupsByEvent[eventId];
+        }
+
 
         setEditedGroups(prevState => ({
             ...prevState,
@@ -33,11 +45,19 @@ const PersonTable = ({ wcif, events }) => {
     }
 
     const updateWCIF = (personName, eventId, value) => {
+
+        const intValue = parseInt(value);
+        // validar que el valor sea menor o igual a la cantidad de grupos por evento
+
+        if (intValue > groupsByEvent[eventId]) {
+            return;
+        }
+
         const updatedPersons = wcif.persons.map(person => {
             if (person.name === personName) {
                 return {
                     ...person,
-                    [eventId]: value
+                    [eventId]: intValue
                 };
             }
             return person;
@@ -98,42 +118,49 @@ const PersonTable = ({ wcif, events }) => {
         return acc;
     }, {});
 
-    const generateScoreSheet = () => {
-        // xd
+    const generateScoreSheet = async () => {
+
+        setUrlEmptyScoreSheet('');
+        setUrlScoreSheet('');
+
+        wcif.lang = languageScoreSheet;
+
+
+        wcif.groups = groupsByEvent;
+        wcif.addWcaId = showWcaId;
+
+        wcif.groups = Object.keys(wcif.groups).reduce((acc, key) => {
+            if (key !== 'criteria') {
+                acc[key] = wcif.groups[key];
+            }
+            return acc;
+        }, {});
+
+        // llamamos a papi
+        const response = await mutateGenerateScoreSheet.mutateAsync(wcif);
+        setUrlEmptyScoreSheet(response.emptyScoreSheet);
+        setUrlScoreSheet(response.scoreSheet);
+
     }
 
     const downloadImages = async () => {
-        // obtener las persons.avatar.url que no tengan missing_avatar_thumb y enviarlas al back , enviar , nombre, url y registrationId
-        // const avatars = wcif.persons.filter(person => person.avatar && !person.avatar.url.includes('missing_avatar_thumb')).map(person => {
-        //     return {
-        //         "name": person.name,
-        //         "url": person.avatar.url,
-        //         "registrantId": person.registrantId
-        //     }
-        // })
-        const avatars = wcif.persons.filter(person => person.avatar && !person.avatar.url.includes('missing_avatar_thumb'));
-        const zip = new JSZip();
 
-        await Promise.all(avatars.map(async (person) => {
-            const response = await fetch(person.avatar.url, {
-                "headers": {
-                    "Access-Control-Allow-Origin": "*"
-                }
-            });
-            const blob = await response.blob();
-            zip.file(`${person.registrantId}_${person.name.replace(/ /g, '_').toLowerCase()}.jpg`, blob);
-        }));
+        setUrlZip('');
 
-        const content = await zip.generateAsync({ type: 'blob' });
-        const url = URL.createObjectURL(content);
+        const avatars = wcif.persons.filter(person => person.avatar && !person.avatar.url.includes('missing_avatar_thumb')).map(person => {
+            return {
+                "name": person.name,
+                "url": person.avatar.url,
+                "registrantId": person.registrantId
+            }
+        })
+        avatars.push({
+            "name": wcif.id,
+        })
 
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = 'avatars.zip';
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        URL.revokeObjectURL(url);
+        const response = await mutateAvatarZip.mutateAsync({ "avatars": avatars });
+
+        setUrlZip(response.url)
 
     }
 
@@ -152,7 +179,10 @@ const PersonTable = ({ wcif, events }) => {
                 </div>
                 <div className="w-1/2">
                     {/* Boton para descargar las imagenes  */}
-                    <button className="py-2 px-4 rounded-lg bg-blue-500 text-white font-semibold hover:bg-blue-600 hidden" onClick={() => downloadImages()}>{t("download-images-competitors")}</button>
+                    <button className="py-2 px-4 rounded-lg bg-blue-500 text-white font-semibold hover:bg-blue-600" onClick={() => downloadImages()}>{t("obtain-images-competitors")}</button>
+
+                    {urlZip && <a href={urlZip} download="avatars.zip" className="py-2 px-4 rounded-lg bg-blue-500 text-white font-semibold hover:bg-blue-600 ml-2">{t("download-zip")}</a>
+                    }
                 </div>
             </div>
             <table className='min-w-full table-auto mt-4'>
@@ -178,10 +208,17 @@ const PersonTable = ({ wcif, events }) => {
                                 <td key={`${person.registrantId}-${event.id}`} className='py-3 px-6 text-left'>
                                     <input
                                         type="number"
-                                        className={`w-16 p-2 rounded border ${getEventGroup(person, event) === '' ? 'border-dotted border-red-300' : 'border'}`}
+                                        className={`w-16 p-2 rounded border ${getEventGroup(person, event) === '' ? 'border-dotted border-red-300' : 'border'} ${groupsByEvent[event.id] < getEventGroup(person, event) ? 'border-red-500' : ''}`}
                                         value={getEventGroup(person, event)}
                                         onChange={(e) => handleInputChange(person.name, event.id, e.target.value)}
                                         min={1}
+                                        onKeyDown={(e) => {
+                                            if (e.key === 'e' || e.key === ',' || e.key === 'E' || e.key === '.' || e.key === '-' || e.key === '+') {
+                                                e.preventDefault();
+                                            }
+                                        }
+                                        }
+
                                     />
                                 </td>
                             ))}
@@ -190,7 +227,7 @@ const PersonTable = ({ wcif, events }) => {
                 </tbody>
             </table>
 
-            <div className='flex flex-row'>
+            <div className='flex flex-row mb-5'>
                 <div className="mt-4 w-1/3">
                     <input type="checkbox" checked={showWcaId} onChange={() => setShowWcaId(!showWcaId)} className="mr-2" />
                     <label>{t("show-wca-id")}</label>
@@ -200,16 +237,39 @@ const PersonTable = ({ wcif, events }) => {
                     <select
                         className="px-2 py-1 border rounded"
                         value={languageScoreSheet}
-                        onChange={(e) => setLanguageScoreSheet()}
+                        onChange={(e) => setLanguageScoreSheet(e.target.value)}
                     >
                         <option value="en">English</option>
                         <option value="es">Español</option>
                     </select>
                 </div>
-                <div className="mt-4 w-1/3 hidden">
+                <div className="mt-4 w-1/3">
                     <button onClick={generateScoreSheet} className="py-2 px-4 rounded-lg bg-blue-500 text-white font-semibold hover:bg-blue-600">{t("generate-score-sheet")}</button>
                 </div>
             </div>
+            <div className="mb-4">
+                {urlScoreSheet && (
+                    <a
+                        href={urlScoreSheet}
+                        download="scoresheet.pdf"
+                        className="block py-2 px-4 rounded-lg bg-blue-500 text-white font-semibold hover:bg-blue-600"
+                    >
+                        {t("download-scoresheet")}
+                    </a>
+                )}
+            </div>
+            <div>
+                {urlEmptyScoreSheet && (
+                    <a
+                        href={urlEmptyScoreSheet}
+                        download="empty-scoresheet.pdf"
+                        className="block py-2 px-4 rounded-lg bg-blue-500 text-white font-semibold hover:bg-blue-600"
+                    >
+                        {t("download-empty-scoresheet")}
+                    </a>
+                )}
+            </div>
+
         </div>
     );
 }

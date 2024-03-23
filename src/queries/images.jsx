@@ -4,7 +4,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
 
 const avatarZip = async (data) => {
-    const response = await clienteBack.post(`images`, data);
+    const response = await clienteBack.post(`images/getAvatarsZip`, data);
     return response.data;
 }
 

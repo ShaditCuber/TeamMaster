@@ -9,6 +9,10 @@ const generateGroups = async (data) => {
     return response.data;
 }
 
+const generateScoreSheet = async (data) => {
+    const response = await clienteBack.post(`groups/generateScoresheet`, data);
+    return response.data;
+}
 
 
 
@@ -18,6 +22,17 @@ export const useGenerateGroups = () => {
         {
             mutationFn: (data) => {
                 return generateGroups(data);
+            }
+        }
+    );
+}
+
+export const useGenerateScoreSheet = () => {
+
+    return useMutation(
+        {
+            mutationFn: (data) => {
+                return generateScoreSheet(data);
             }
         }
     );

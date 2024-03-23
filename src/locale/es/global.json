@@ -35,5 +35,8 @@
     "show-wca-id": "Mostrar ID WCA en ScoreSheet",
     "select-language": "Seleccionar idioma en ScoreSheet",
     "generate-score-sheet": "Generar ScoreSheet",
-    "download-images-competitors": "Descargar imágenes de competidores"
+    "obtain-images-competitors": "Obtener imágenes de competidores",
+    "download-zip" : "Descargar ZIP",
+    "download-scoresheet": "Descargar ScoreSheet",
+    "download-empty-scoresheet": "Descargar ScoreSheet en blanco"
 }
