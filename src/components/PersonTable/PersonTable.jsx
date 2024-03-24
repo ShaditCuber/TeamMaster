@@ -16,7 +16,7 @@ const PersonTable = ({ wcif, events, groupsByEvent }) => {
     const [urlEmptyScoreCard, setUrlEmptyScoreCard] = useState('');
     const [urlGroupsPDF, setUrlGroupsPDF] = useState('');
     const [urlGroupCSV, setUrlGroupCSV] = useState('');
-    const [image, setImage] = useState(null);
+    const [image, setImage] = useState();
 
     const mutateGenerateScoreCard = useGenerateScoreSheet();
     const mutateAvatarZip = useAvatarZip();
@@ -148,7 +148,9 @@ const PersonTable = ({ wcif, events, groupsByEvent }) => {
 
         const formData = new FormData();
         formData.append('wcif', JSON.stringify(wcif));
-        formData.append('image', image);
+        if (image !== undefined) {
+            formData.append('image', image);
+        }
 
         // llamamos a papi
         const response = await mutateGenerateScoreCard.mutateAsync(formData);
@@ -262,7 +264,7 @@ const PersonTable = ({ wcif, events, groupsByEvent }) => {
                 <div className="mt-4 w-1/3 flex items-center">
                     <div className="mr-4">
                         <input type="file" onChange={handleImageChange} accept=".png" className="hidden" id="imageInput" />
-                        <label htmlFor="imageInput" className="cursor-pointer px-4 py-2 rounded-lg bg-blue-500 text-white font-semibold hover:bg-blue-600">{t("select-image")}</label>
+                        <label htmlFor="imageInput" className="cursor-pointer px-4 py-2 rounded-lg bg-blue-500 text-white font-semibold hover:bg-blue-600" title={t("image-title")}>{t("select-image")}</label>
                     </div>
                     <button onClick={generateScoreCard} className="py-2 px-4 rounded-lg bg-blue-500 text-white font-semibold hover:bg-blue-600">{t("generate-scoreCard")}</button>
                 </div>

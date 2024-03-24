@@ -41,5 +41,6 @@
     "download-empty-scoreCard": "Descargar ScoreCard en Blanco",
     "download-groups": "Descargar Grupos",
     "download-groups-csv" : "Descargar Grupos en CSV",
-    "select-image" : "Seleccionar Marca Agua ScoreCard"
+    "select-image" : "Seleccionar Marca Agua ScoreCard",
+    "image-title": "Imagen en el centro del lienzo (recomendado 1600x1200 pixeles)"
 }
