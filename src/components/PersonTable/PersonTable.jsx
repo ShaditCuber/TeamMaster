@@ -182,7 +182,7 @@ const PersonTable = ({ wcif, events, groupsByEvent }) => {
 
 
     return (
-        <div className='overflow-x-auto mt-5'>
+        <div className='overflow-x-auto mt-5 bg-white p-4 rounded-2xl'>
             <div className="flex flex-row gap-10 w-full">
                 <div className='w-1/2'>
                     <label className="mr-2">{t("filter-by-name")}</label>

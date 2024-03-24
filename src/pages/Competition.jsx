@@ -169,7 +169,7 @@ function Competion() {
                 </table>
             </div>
 
-            <div className='flex flex-row gap-10 w-full'>
+            <div className='flex flex-row gap-10 w-full bg-white rounded-2xl py-4 mt-4'>
                 <select
                     className="w-1/2 px-4 py-2 mt-4 text-gray-700 bg-white border border-gray-300 rounded-md focus:border-blue-500 focus:outline-none focus:ring h-10"
                     name="groupingOption"
@@ -187,7 +187,7 @@ function Competion() {
 
             </div>
 
-            <div className='mt-4'>
+            <div className='mt-4 h-[290px] overflow-y-auto'>
                 {
                     wcif?.persons?.length > 0 ?
                         <PersonTable wcif={wcif} events={data.events} groupsByEvent={groupsByEvent} /> :
