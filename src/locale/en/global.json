@@ -40,5 +40,6 @@
     "download-scoreCard": "Download ScoreCard",
     "download-empty-scoreCard": "Download Empty ScoreCard",
     "download-groups": "Download Groups",
-    "download-groups-csv": "Download Groups CSV"
+    "download-groups-csv": "Download Groups CSV",
+    "select-image": "Select Watermark ScoreCard"
 }

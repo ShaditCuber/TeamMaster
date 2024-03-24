@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useUsuario } from '../context/AuthContext'
 import { IconTeamMaster } from '../Icons/Icons';
+import { GitHub } from '../components/Icons/Icons';
 
 const Layout = ({ children }) => {
 
@@ -28,6 +29,9 @@ const Layout = ({ children }) => {
                         <IconTeamMaster width={40} height={40} />
                         <a href={user?.token ? "/competitions" : "/"} className="mt-4 text-3xl font-semibold mb-4 text-red-500 inline-flex items-center mx-4">
                             Team<span className="text-blue-500">Master</span>
+                        </a>
+                        <a href="https://github.com/ShaditCuber/TeamMaster" target="_blank" rel="noopener noreferrer" className="text-white ml-2 hover:text-blue-500">
+                            <GitHub fill="white" className="hover:red" />
                         </a>
                     </div>
                     {user?.token != null ? (

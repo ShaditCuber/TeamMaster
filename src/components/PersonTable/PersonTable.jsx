@@ -16,12 +16,18 @@ const PersonTable = ({ wcif, events, groupsByEvent }) => {
     const [urlEmptyScoreCard, setUrlEmptyScoreCard] = useState('');
     const [urlGroupsPDF, setUrlGroupsPDF] = useState('');
     const [urlGroupCSV, setUrlGroupCSV] = useState('');
+    const [image, setImage] = useState(null);
 
     const mutateGenerateScoreCard = useGenerateScoreSheet();
     const mutateAvatarZip = useAvatarZip();
 
     const { t } = useTranslation('global');
 
+
+    const handleImageChange = (event) => {
+        const file = event.target.files[0];
+        setImage(file);
+    };
 
     const handleInputChange = (personName, eventId, value) => {
 
@@ -132,7 +138,7 @@ const PersonTable = ({ wcif, events, groupsByEvent }) => {
 
         wcif.groups = groupsByEvent;
         wcif.addWcaId = showWcaId;
-
+        // wcif.image = image;
         wcif.groups = Object.keys(wcif.groups).reduce((acc, key) => {
             if (key !== 'criteria') {
                 acc[key] = wcif.groups[key];
@@ -140,8 +146,12 @@ const PersonTable = ({ wcif, events, groupsByEvent }) => {
             return acc;
         }, {});
 
+        const formData = new FormData();
+        formData.append('wcif', JSON.stringify(wcif));
+        formData.append('image', image);
+
         // llamamos a papi
-        const response = await mutateGenerateScoreCard.mutateAsync(wcif);
+        const response = await mutateGenerateScoreCard.mutateAsync(formData);
         setUrlEmptyScoreCard(response.emptyScoreCard);
         setUrlScoreCard(response.scoreCard);
         setUrlGroupsPDF(response.groupsPDF);
@@ -233,7 +243,7 @@ const PersonTable = ({ wcif, events, groupsByEvent }) => {
                 </tbody>
             </table>
 
-            <div className='flex flex-row mb-5'>
+            <div className="flex flex-row mb-5">
                 <div className="mt-4 w-1/3">
                     <input type="checkbox" checked={showWcaId} onChange={() => setShowWcaId(!showWcaId)} className="mr-2" />
                     <label>{t("show-wca-id")}</label>
@@ -245,14 +255,19 @@ const PersonTable = ({ wcif, events, groupsByEvent }) => {
                         value={languageScoreCard}
                         onChange={(e) => setLanguageScoreCard(e.target.value)}
                     >
-                        <option value="en">English</option>
-                        <option value="es">Español</option>
+                        <option value="en">{t("lang-en")}</option>
+                        <option value="es">{t("lang-es")}</option>
                     </select>
                 </div>
-                <div className="mt-4 w-1/3">
+                <div className="mt-4 w-1/3 flex items-center">
+                    <div className="mr-4">
+                        <input type="file" onChange={handleImageChange} accept=".png" className="hidden" id="imageInput" />
+                        <label htmlFor="imageInput" className="cursor-pointer px-4 py-2 rounded-lg bg-blue-500 text-white font-semibold hover:bg-blue-600">{t("select-image")}</label>
+                    </div>
                     <button onClick={generateScoreCard} className="py-2 px-4 rounded-lg bg-blue-500 text-white font-semibold hover:bg-blue-600">{t("generate-scoreCard")}</button>
                 </div>
             </div>
+
             <div className="mb-4">
                 {urlScoreCard && (
                     <a

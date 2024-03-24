@@ -40,5 +40,6 @@
     "download-scoreCard": "Descargar ScoreCard",
     "download-empty-scoreCard": "Descargar ScoreCard en Blanco",
     "download-groups": "Descargar Grupos",
-    "download-groups-csv" : "Descargar Grupos en CSV"
+    "download-groups-csv" : "Descargar Grupos en CSV",
+    "select-image" : "Seleccionar Marca Agua ScoreCard"
 }
