@@ -218,9 +218,14 @@ const PersonTable = ({ wcif, events, groupsByEvent }) => {
                     {sortedPersons.map((person, index) => (
                         <tr key={index} className='border-b border-gray-200 hover:bg-gray-100'>
                             <td className='py-3 px-6 text-left whitespace-nowrap'>
-                                <a href={`https://www.worldcubeassociation.org/persons/${person.wcaId}`} className='text-red-400 hover:text-xl' target='_blank'>{person.wcaId}</a>
+                                {
+                                    person.wcaId ?
+                                        <a href={`https://www.worldcubeassociation.org/persons/${person.wcaId}`} className='text-red-400 hover:text-xl' target='_blank'>{person.wcaId}</a>
+                                        : ''
+
+                                }
                             </td>
-                            <td className='py-3 px-6 text-left whitespace-nowrap'>{person.name}</td>
+                            <td className={`py-3 px-6 text-left whitespace-nowrap ${person.wcaId === null ? 'text-red-600' : ''}`}>{person.name}</td>
                             <td className='py-3 px-6 text-left whitespace-nowrap'>{person.age}</td>
                             {events.map(event => (
                                 <td key={`${person.registrantId}-${event.id}`} className='py-3 px-6 text-left'>
