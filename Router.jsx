@@ -18,7 +18,7 @@ const RouterApp = () => {
 
     return (
         <Routes>
-            <Route path="/" element={<Layout><Home /></Layout>} />
+            <Route path="/" element={<Home />} />
             <Route path="/competitions" element={<ProtectedRoute><Competitions /></ProtectedRoute>} />
             <Route path="/competitions/:id" element={<ProtectedRoute><Competition /></ProtectedRoute>} />
             <Route path="*" element={<Layout><Error /></Layout>} />
