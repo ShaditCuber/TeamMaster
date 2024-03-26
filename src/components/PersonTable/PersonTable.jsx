@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useAvatarZip } from "../../queries/images";
 import { useGenerateScoreSheet } from "../../queries/groups";
+import { SortIcon } from "../../Icons/Icons";
 
 const PersonTable = ({ wcif, events, groupsByEvent }) => {
   const [editedGroups, setEditedGroups] = useState({});
@@ -254,13 +255,23 @@ const PersonTable = ({ wcif, events, groupsByEvent }) => {
                 className="whitespace-nowrap px-4 py-2 font-medium text-gray-900"
                 onClick={() => sortBy("name")}
               >
-                {t("name")}
+                <div className="flex cursor-pointer items-center">
+                  {t("name")}
+                  <span className="">
+                    <SortIcon className="h-4 w-4 " />
+                  </span>
+                </div>
               </th>
               <th
                 className="whitespace-nowrap px-4 py-2 font-medium text-gray-900"
                 onClick={() => sortBy("age")}
               >
-                {t("age")}
+                <div className="flex cursor-pointer items-center">
+                  {t("age")}
+                  <span className="">
+                    <SortIcon className="h-4 w-4 " />
+                  </span>
+                </div>
               </th>
               {events.map((event) => (
                 <th
@@ -268,7 +279,12 @@ const PersonTable = ({ wcif, events, groupsByEvent }) => {
                   className="whitespace-nowrap px-4 py-2 font-medium text-gray-900"
                   onClick={() => sortBy(event.id)}
                 >
-                  {event.id}
+                  <div className="flex cursor-pointer items-center">
+                    {event.id}
+                    <span className="">
+                      <SortIcon className="h-4 w-4 " />
+                    </span>
+                  </div>
                 </th>
               ))}
             </tr>
@@ -283,10 +299,14 @@ const PersonTable = ({ wcif, events, groupsByEvent }) => {
                     className="text-red-400"
                     target="_blank"
                   >
-                    {`${person.wcaId ? person.wcaId : t("available")}`}
+                    {`${person.wcaId ? person.wcaId : "-"}`}
                   </a>
                 </td>
-                <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
+                <td
+                  className={`whitespace-nowrap px-4 py-2 font-medium text-gray-900 ${
+                    person.wcaId ? "" : "text-green-500/70"
+                  }`}
+                >
                   {person.name}
                 </td>
                 <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
