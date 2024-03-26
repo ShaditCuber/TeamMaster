@@ -14,8 +14,8 @@
     "date-tournament": "Date of the tournament",
     "delegate": "Delegate",
     "loading": "Loading...",
-    "lang-en": "English",
-    "lang-es": "Spanish",
+    "lang-en": "En-English",
+    "lang-es": "Es-Spanish",
     "change-language": "Change language",
     "back": "Back",
     "events": "Events",
@@ -42,5 +42,12 @@
     "download-groups": "Download Groups",
     "download-groups-csv": "Download Groups CSV",
     "select-image": "Select Watermark ScoreCard",
-    "image-title" : "Image in the center of the canvas recommended(1600x1200 pixels)"
+    "language": "Language",
+    "others": "Others",
+    "contact": "Contact",
+    "home": "Home",
+    "results": "Group results",
+    "available": "Not available"
+
+
 }
