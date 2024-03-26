@@ -15,7 +15,7 @@ function Competion() {
   const [competitorsByEvent, setCompetitorsByEvent] = React.useState({});
   const [groupsByEvent, setGroupsByEvent] = React.useState([]);
   const [averageByEvent, setAverageByEvent] = React.useState([]);
-  const [xd, setXd] = React.useState("");
+  const [loadingGroups, setLoadingGroups] = React.useState(false);
   const mutationGenerateGroups = useGenerateGroups();
   const [groupingOption, setGroupingOption] = React.useState("random");
   let competition_id;
@@ -92,15 +92,19 @@ function Competion() {
   };
 
   const generateGroup = async () => {
+    setLoadingGroups(true);
     console.log(groupsByEvent);
     console.log(groupingOption);
     groupsByEvent.criteria = groupingOption;
     const requestData = { wcif: data, data: groupsByEvent };
     const data_groups = await mutationGenerateGroups.mutateAsync(requestData);
     setWcif(data_groups);
+    if (data_groups) {
+      setLoadingGroups(false);
+    }
   };
 
-  if (isLoading) {
+  if (isLoading || !data || loadingGroups) {
     return <Loader />;
   }
 

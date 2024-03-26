@@ -3,6 +3,7 @@ import { useState } from "react";
 import { IconTeamMaster } from "../../Icons/Icons";
 import { useUsuario } from "../../context/AuthContext";
 import { useTranslation } from "react-i18next";
+import { GitHub } from "../Icons/Icons";
 
 const Sidebar = ({ isVisible }) => {
   const [t, i18n] = useTranslation("global");
@@ -38,11 +39,10 @@ const Sidebar = ({ isVisible }) => {
             <Link
               to="/competitions"
               // HERE YOU MUST CHANGE IT FOR YOURS ROUTES
-              className={`${
-                location.pathname === "/"
-                  ? "block rounded-lg px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100"
-                  : "block rounded-lg px-4 py-2 text-sm font-medium text-gray-700 bg-gray-200 "
-              } `}
+              className={`${location.pathname === "/"
+                ? "block rounded-lg px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100"
+                : "block rounded-lg px-4 py-2 text-sm font-medium text-gray-700 bg-gray-200 "
+                } `}
             >
               {t("home")}
             </Link>
@@ -68,12 +68,22 @@ const Sidebar = ({ isVisible }) => {
         {/*END OTHERS SECTION */}
       </section>
       {user !== null ? (
-        <button
-          onClick={() => signOut()}
-          className="block py-2 px-4 rounded-lg bg-red-500 text-white font-semibold hover:bg-red-600 transitio-all duration-500"
-        >
-          {t("sign-out")}
-        </button>
+        <div className="flex gap-8 items-center">
+          <a
+            href="https://github.com/ShaditCuber/TeamMaster"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-black ml-2 hover:text-blue-500"
+          >
+            <GitHub fill="black" className="hover:red" />
+          </a>
+          <button
+            onClick={() => signOut()}
+            className="block py-2 px-4 rounded-lg bg-red-500 text-white font-semibold hover:bg-red-600 transitio-all duration-500"
+          >
+            {t("sign-out")}
+          </button>
+        </div>
       ) : (
         ""
       )}

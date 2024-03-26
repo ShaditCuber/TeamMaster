@@ -21,7 +21,7 @@ const Navbar = ({ onMenuClick }) => {
 
   return (
     <header className={`${!user ? "bg-white border-b fixed w-full z-10" : ""}`}>
-      <div className="mx-auto flex justify-between h-16 max-w-screen-xl items-center gap-8 px-4 sm:px-6 lg:px-8">
+      <div className={`mx-auto flex justify-between h-16 items-center gap-8 px-4 sm:px-6 lg:px-8 ${!user && 'max-w-screen-xl'}`}>
         {!user ? (
           <div className="flex items-center justify-center">
             <IconTeamMaster width={40} height={40} />
@@ -37,11 +37,11 @@ const Navbar = ({ onMenuClick }) => {
               rel="noopener noreferrer"
               className="text-black ml-2 hover:text-blue-500"
             >
-              {!user ? <GitHub fill="black" className="hover:red" /> : ""}
+              {!user && <GitHub fill="black" className="hover:red" />}
             </a>
           </div>
         ) : (
-          <div className="flex-1 md:flex md:items-center md:gap-12">
+          <div className="flex-1 md:flex md:justify-between md:items-center md:gap-12">
             <button className="btn btn-ghost text-xl" onClick={onMenuClick}>
               <span className="sr-only">Home</span>
               <MenuIcons className="h-8 w-8" />

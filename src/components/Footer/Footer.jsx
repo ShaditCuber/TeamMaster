@@ -2,6 +2,7 @@ import React from "react";
 import { IconTeamMaster } from "../../Icons/Icons";
 
 const Footer = () => {
+
   return (
     <footer className="border-t w-full">
       <div className="mx-auto max-w-screen-xl px-4 py-2 sm:px-6 lg:px-8">
@@ -17,7 +18,7 @@ const Footer = () => {
           </div>
 
           <p className="mt-4 text-center text-sm text-gray-500 lg:mt-0 lg:text-right">
-            Copyright TeamMaster &copy; 2024. All rights reserved.
+            Copyright TeamMaster &copy; {new Date().getFullYear()}. All rights reserved.
           </p>
         </div>
       </div>
