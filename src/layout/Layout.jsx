@@ -41,7 +41,7 @@ const Layout = ({ children }) => {
   }, []);
 
   return (
-    <div className="flex">
+    <div className="flex overflow-hidden sm:overflow-auto">
       <Sidebar isVisible={isSidebarVisible} />
       <div className="flex flex-col w-full h-screen p-2">
         <Navbar onMenuClick={toggleSidebar} />
