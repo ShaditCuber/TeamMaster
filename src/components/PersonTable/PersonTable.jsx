@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useAvatarZip } from "../../queries/images";
 import { useGenerateScoreSheet } from "../../queries/groups";
-import { SortIcon } from "../../Icons/Icons";
+import { CheckIcon, ClearIcon, SortIcon } from "../../Icons/Icons";
 
 const PersonTable = ({ wcif, events, groupsByEvent }) => {
     const [editedGroups, setEditedGroups] = useState({});
@@ -28,6 +28,7 @@ const PersonTable = ({ wcif, events, groupsByEvent }) => {
     const handleImageChange = (event) => {
         const file = event.target.files[0];
         setImage(file);
+        console.log(file)
     };
 
     const handleInputChange = (personName, eventId, value) => {
@@ -222,10 +223,10 @@ const PersonTable = ({ wcif, events, groupsByEvent }) => {
                     </select>
                 </div>
 
-                <div>
+                <div className="">
                     {/* Boton para descargar las imagenes  */}
                     <button
-                        className={`py-2 px-4 rounded-lg bg-blue-500 text-white font-semibold  ${urlZip === "" ? "cursor-not-allowed bg-green-500/80" : "hover:bg-blue-600"}`}
+                        className={`py-2 px-4 rounded-lg bg-blue-500 text-white font-semibold inline-block min-w-min ${urlZip === "" ? "cursor-not-allowed bg-green-500/80" : "hover:bg-blue-600"}`}
                         onClick={() => downloadImages()}
                     >
                         {urlZip === "" ? t("download-process") : t("obtain-images-competitors")}
@@ -235,7 +236,7 @@ const PersonTable = ({ wcif, events, groupsByEvent }) => {
                         <a
                             href={urlZip}
                             download="avatars.zip"
-                            className="py-2 px-4 rounded-lg bg-blue-500 text-white font-semibold hover:bg-blue-600 ml-2"
+                            className="mt-3 py-2 px-4 rounded-lg bg-blue-500 text-white font-semibold hover:bg-blue-600 sm:ml-2 inline-block min-w-min"
                         >
                             {t("download-zip")}
                         </a>
@@ -298,10 +299,10 @@ const PersonTable = ({ wcif, events, groupsByEvent }) => {
                                 <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
                                     <a
                                         href={`https://www.worldcubeassociation.org/persons/${person.wcaId}`}
-                                        className="text-red-400"
+                                        className="text-red-400 hover:text-xl"
                                         target="_blank"
                                     >
-                                        {`${person.wcaId ? person.wcaId : "-"}`}
+                                        {`${person.wcaId ? person.wcaId : ""}`}
                                     </a>
                                 </td>
                                 <td
@@ -354,7 +355,7 @@ const PersonTable = ({ wcif, events, groupsByEvent }) => {
             </div>
 
             <div className="mt-4 grid md:flex gap-4 justify-end items-center">
-                <div className="">
+                <div className="flex">
                     <input
                         type="file"
                         onChange={handleImageChange}
@@ -364,11 +365,23 @@ const PersonTable = ({ wcif, events, groupsByEvent }) => {
                     />
                     <label
                         htmlFor="imageInput"
-                        className="cursor-pointer px-4 py-2 rounded-lg bg-blue-500 text-white font-semibold hover:bg-blue-600"
+                        className="cursor-pointer px-4 py-2 rounded-lg bg-blue-500 text-white font-semibold hover:bg-blue-600 inline-block min-w-min"
                         title={t("image-title")}
                     >
                         {t("select-image")}
+
                     </label>
+                    {image && (
+                        <div className="flex flex-col items-center">
+                            <button
+                                className="cursor-pointer text-red-500 mt-2"
+                                onClick={() => setImage(null)}
+                            >
+                                <ClearIcon />
+                            </button>
+                        </div>
+                    )}
+
                 </div>
                 <button
                     onClick={generateScoreCard}

@@ -27,7 +27,7 @@ const Navbar = ({ onMenuClick }) => {
             <IconTeamMaster width={40} height={40} />
             <a
               href="#"
-              className="mt-4 text-3xl font-semibold mb-4 text-red-500 inline-flex items-center mx-4"
+              className="mt-4 text-xl font-semibold mb-4 text-red-500 inline-flex items-center mx-4 xl:text-3xl"
             >
               Team<span className="text-blue-500">Master</span>
             </a>

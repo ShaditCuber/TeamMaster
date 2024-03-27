@@ -30,7 +30,7 @@ export const Home = () => {
       <Navbar />
       <div className="grid place-items-center bg-cover bg-center grid-cols-1 grid-rows-1 min-h-dvh">
         <div className="z-0 flex items-center justify-center max-w-screen-xl gap-4 p-4 text-center">
-          <div className="max-w-2xl">
+          <div className="max-w-2xl my-[90px]">
             <h2 className="lg:text-3xl mb-2 font-semibold text-gray-800">
               {t("welcome")} <span className="text-red-500">Team</span>
               <span className="text-blue-500">Master</span>
