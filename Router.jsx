@@ -11,9 +11,9 @@ import Competition from "./src/pages/Competition";
 
 const RouterApp = () => {
     const { user } = useUsuario();
-
+    console.log(user)
     const ProtectedRoute = ({ children }) => {
-        return user ? <Layout>{children}</Layout> : <Layout><Home /></Layout>;
+        return user ? <Layout>{children}</Layout> : <Home />;
     };
 
     return (
