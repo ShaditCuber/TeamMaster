@@ -49,5 +49,8 @@
     "results": "Group results",
     "available": "Not available",
     "image-title": "Image in the center of the canvas (recommended 1600x1200 pixels)",
-    "download-process" : "The download process has started, please wait a few seconds"
+    "download-process": "The download process has started, please wait a few seconds",
+    "copy-accepted-emails": "Copy accepted emails",
+    "copy-pending-emails": "Copy pending emails",
+    "copy-emails": "Copy emails to clipboard"
 }

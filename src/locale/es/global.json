@@ -49,5 +49,8 @@
   "results": "Resultado de grupos",
   "available": "No disponible",
   "image-title": "Imagen en el centro del lienzo (recomendado 1600x1200 pixeles)",
-  "download-process": "El proceso de descarga ha comenzado, por favor espere unos segundos"
+  "download-process": "El proceso de descarga ha comenzado, por favor espere unos segundos",
+  "copy-accepted-emails": "Copiar emails aceptados",
+  "copy-pending-emails": "Copiar emails pendientes",
+  "copy-emails": "Emails copiados al portapapeles"
 }

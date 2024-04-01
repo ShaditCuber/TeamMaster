@@ -5,6 +5,7 @@ import Loader from "../components/Loader/Loader";
 import { useTranslation } from "react-i18next";
 import { useGenerateGroups } from "../queries/groups";
 import PersonTable from "../components/PersonTable/PersonTable";
+import { toast } from "sonner";
 
 function Competion() {
   const { t } = useTranslation("global");
@@ -102,6 +103,30 @@ function Competion() {
     if (data_groups) {
       setLoadingGroups(false);
     }
+  };
+
+  const copyEmails = (accepted = true) => {
+    const emails = [];
+    data.persons.forEach((person) => {
+      if (accepted) {
+        if (person.registration.status === "accepted") {
+          emails.push(person.email);
+        }
+      } else {
+        if (person.registration.status !== "accepted") {
+          emails.push(person.email);
+        }
+      }
+    });
+
+    navigator.clipboard.writeText(emails.join(", ")).then(
+      function () {
+        toast.success(t("copy-emails"), { duration: 1500 });
+      }
+    );
+
+
+
   };
 
   if (isLoading || !data || loadingGroups) {
@@ -204,11 +229,24 @@ function Competion() {
         </select>
 
         <button
-          className="bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded mt-4 mr-2 w-1/2 h-auto w-auto"
+          className="bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded mt-4 mr-2 w-1/2 h-auto"
           onClick={() => generateGroup()}
         >
           {t("generate-groups")}
         </button>
+        <button
+          className="bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded mt-4 mr-2 w-1/2 h-auto"
+          onClick={() => copyEmails()}
+        >
+          {t("copy-accepted-emails")}
+        </button>
+        <button
+          className="bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded mt-4 mr-2 w-1/2 h-auto"
+          onClick={() => copyEmails(false)}
+        >
+          {t("copy-pending-emails")}
+        </button>
+
       </div>
 
       <div className="mt-4">
