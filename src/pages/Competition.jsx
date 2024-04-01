@@ -119,14 +119,9 @@ function Competion() {
       }
     });
 
-    navigator.clipboard.writeText(emails.join(", ")).then(
-      function () {
-        toast.success(t("copy-emails"), { duration: 1500 });
-      }
-    );
-
-
-
+    navigator.clipboard.writeText(emails.join(", ")).then(function () {
+      toast.success(t("copy-emails"), { duration: 1500 });
+    });
   };
 
   if (isLoading || !data || loadingGroups) {
@@ -215,9 +210,9 @@ function Competion() {
         </table>
       </div>
 
-      <div className="flex flex-row gap-10 w-full">
+      <div className="lg:flex grid lg:justify-between gap-4 w-full">
         <select
-          className="w-1/2 px-4 py-2 mt-4 text-gray-700 bg-white border border-gray-300 rounded-md focus:border-blue-500 focus:outline-none focus:ring h-10"
+          className="w-full px-4 py-2 mt-4 text-gray-700 bg-white border border-gray-300 rounded-md focus:border-blue-500 focus:outline-none focus:ring h-10"
           name="groupingOption"
           id="groupingOption"
           onChange={(e) => setGroupingOption(e.target.value)}
@@ -229,24 +224,25 @@ function Competion() {
         </select>
 
         <button
-          className="bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded mt-4 mr-2 w-1/2 h-auto"
+          className="bg-blue-500 w-full hover:bg-blue-400 text-white py-2 px-4 border-b-4 transition-all duration-500 rounded-2xl mt-4 mr-2 h-auto"
           onClick={() => generateGroup()}
         >
           {t("generate-groups")}
         </button>
+
         <button
-          className="bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded mt-4 mr-2 w-1/2 h-auto"
+          className="bg-blue-500 w-full hover:bg-blue-400 text-white py-2 px-4 border-b-4 transition-all duration-500 rounded-2xl mt-4 mr-2 h-auto"
           onClick={() => copyEmails()}
         >
           {t("copy-accepted-emails")}
         </button>
+
         <button
-          className="bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded mt-4 mr-2 w-1/2 h-auto"
+          className="bg-blue-500 w-full hover:bg-blue-400 text-white py-2 px-4 border-b-4 transition-all duration-500 rounded-2xl mt-4 mr-2 h-auto"
           onClick={() => copyEmails(false)}
         >
           {t("copy-pending-emails")}
         </button>
-
       </div>
 
       <div className="mt-4">

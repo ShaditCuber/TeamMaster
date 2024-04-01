@@ -6,7 +6,7 @@ import { useUsuario } from "../../context/AuthContext";
 
 const Navbar = ({ onMenuClick }) => {
   const [t, i18n] = useTranslation("global");
-  const { user, signOut } = useUsuario();
+  const { user } = useUsuario();
 
   useEffect(() => {
     const savedLanguage = localStorage.getItem("i18nextLng");
