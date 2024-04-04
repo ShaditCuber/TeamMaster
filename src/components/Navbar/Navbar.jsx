@@ -7,9 +7,10 @@ import { useUsuario } from "../../context/AuthContext";
 const Navbar = ({ onMenuClick }) => {
   const [t, i18n] = useTranslation("global");
   const { user } = useUsuario();
+  const savedLanguage = localStorage.getItem("i18nextLng");
+
 
   useEffect(() => {
-    const savedLanguage = localStorage.getItem("i18nextLng");
     if (savedLanguage) {
       i18n.changeLanguage(savedLanguage);
     }
@@ -17,7 +18,13 @@ const Navbar = ({ onMenuClick }) => {
 
   useEffect(() => {
     localStorage.setItem("i18nextLng", i18n.language);
+    i18n.changeLanguage(i18n.language);
   }, [i18n.language]);
+
+  const changeLanguage = (e) => {
+    localStorage.setItem("i18nextLng", e.target.value);
+    i18n.changeLanguage(e.target.value);
+  }
 
   return (
     <header className={`${!user ? "bg-white border-b fixed w-full z-10" : ""}`}>
@@ -61,8 +68,8 @@ const Navbar = ({ onMenuClick }) => {
             name="HeadlineAct"
             id="HeadlineAct"
             className="mt-1.5 w-full rounded-lg border border-gray-300 text-gray-700 sm:text-md"
-            value={i18n.language}
-            onChange={(e) => i18n.changeLanguage(e.target.value)}
+            value={savedLanguage || "es"}
+            onChange={(e) => changeLanguage(e)}
           >
             <option value="es">{t("lang-es")}</option>
             <option value="en">{t("lang-en")}</option>
