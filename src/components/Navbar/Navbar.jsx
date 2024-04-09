@@ -1,14 +1,15 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { IconTeamMaster, MenuIcons } from "../../Icons/Icons";
 import { GitHub } from "../Icons/Icons";
 import { useTranslation } from "react-i18next";
 import { useUsuario } from "../../context/AuthContext";
 
-const Navbar = ({ onMenuClick }) => {
+const Navbar = ({ showNav, setShowNav }) => {
   const [t, i18n] = useTranslation("global");
   const { user } = useUsuario();
   const savedLanguage = localStorage.getItem("i18nextLng");
 
+  useState(showNav);
 
   useEffect(() => {
     if (savedLanguage) {
@@ -24,11 +25,15 @@ const Navbar = ({ onMenuClick }) => {
   const changeLanguage = (e) => {
     localStorage.setItem("i18nextLng", e.target.value);
     i18n.changeLanguage(e.target.value);
-  }
+  };
 
   return (
     <header className={`${!user ? "bg-white border-b fixed w-full z-10" : ""}`}>
-      <div className={`mx-auto flex justify-between h-16 items-center gap-8 px-4 sm:px-6 lg:px-8 ${!user && 'max-w-screen-xl'}`}>
+      <div
+        className={`mx-auto flex justify-between h-16 items-center gap-8 px-4 sm:px-6 lg:px-8 ${
+          !user && "max-w-screen-xl"
+        }`}
+      >
         {!user ? (
           <div className="flex items-center justify-center">
             <IconTeamMaster width={40} height={40} />
@@ -49,7 +54,10 @@ const Navbar = ({ onMenuClick }) => {
           </div>
         ) : (
           <div className="flex-1 md:flex md:justify-between md:items-center md:gap-12">
-            <button className="btn btn-ghost text-xl" onClick={onMenuClick}>
+            <button
+              className="btn btn-ghost text-xl"
+              onClick={() => setShowNav(!showNav)}
+            >
               <span className="sr-only">Home</span>
               <MenuIcons className="h-8 w-8" />
             </button>

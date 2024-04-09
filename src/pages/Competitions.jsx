@@ -13,7 +13,7 @@ const Competitions = () => {
   }
 
   return (
-    <div className="container mx-auto px-4">
+    <div className="container mx-auto px-4 animate-fade-in animate-delay-200 animate-duration-slow">
       <h1 className="text-2xl font-bold mb-4">{t("competitions")}</h1>
 
       <div className="overflow-x-auto text-center rounded-lg border border-gray-200">
