@@ -129,7 +129,7 @@ function Competion() {
   }
 
   return (
-    <div className="">
+    <div className="animate-fade-in animate-delay-500 animate-duration-slow">
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-2xl font-bold mt-4">
           {data ? data.name : "Loading..."}
@@ -144,13 +144,13 @@ function Competion() {
       <div className="grid lg:grid-cols-2 gap-4 mb-4">
         <div className="bg-white p-4 rounded-2xl">
           <h2 className="text-md text-gray-500 mb-2 w-full">{t("events")}</h2>
-          <p className="text-3xl font-bold text-blue-500">{events.length}</p>
+          <p className="text-3xl font-bold text-blue-500 animate-fade-in-right animate-delay-500 animate-duration-slow">{events.length}</p>
         </div>
         <div className="bg-white p-4 rounded-2xl">
           <h2 className="text-md text-gray-500 mb-2 w-full">
             {t("competitors")}
           </h2>
-          <p className="text-3xl font-bold text-blue-500">{countPersons}</p>
+          <p className="text-3xl font-bold text-blue-500 animate-fade-in-left animate-delay-500 animate-duration-slow">{countPersons}</p>
         </div>
       </div>
 
