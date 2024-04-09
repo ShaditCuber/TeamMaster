@@ -1,11 +1,11 @@
 import { Link, useLocation } from "react-router-dom";
-import { useState } from "react";
+import { forwardRef } from "react";
 import { IconTeamMaster } from "../../Icons/Icons";
 import { useUsuario } from "../../context/AuthContext";
 import { useTranslation } from "react-i18next";
 import { GitHub } from "../Icons/Icons";
 
-const Sidebar = ({ isVisible }) => {
+const Sidebar = forwardRef(({ showNav, setShowNav }, ref) => {
   const [t, i18n] = useTranslation("global");
 
   const { user, signOut } = useUsuario();
@@ -13,13 +13,16 @@ const Sidebar = ({ isVisible }) => {
   // USELOCATION FOR ACTIVE NAV a COLOR
   const location = useLocation();
 
-  const sidebarClass = isVisible
+  const sidebarClass = showNav
     ? "translate-x-0 opacity-100 relative"
     : "-translate-x-full absolute";
 
   return (
     <div
-      className={`${sidebarClass} scroll-bar 2xl:overflow-hidden sm:overflow-auto ease-linear duration-300 md:flex flex-col justify-between gap-8 min-h-screen max-h-screen w-[250px] p-4 z-10`}
+      ref={ref}
+      className={`${
+        showNav ? "" : "hidden"
+      } scroll-bar 2xl:overflow-hidden sm:overflow-auto md:flex flex-col justify-between gap-8 min-h-screen max-h-screen w-[250px] p-4 z-10`}
     >
       <section>
         <a className="logo flex items-center justify-center mb-8">
@@ -39,10 +42,11 @@ const Sidebar = ({ isVisible }) => {
             <Link
               to="/competitions"
               // HERE YOU MUST CHANGE IT FOR YOURS ROUTES
-              className={`${location.pathname === "/"
-                ? "block rounded-lg px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100"
-                : "block rounded-lg px-4 py-2 text-sm font-medium text-gray-700 bg-gray-200 "
-                } `}
+              className={`${
+                location.pathname === "/"
+                  ? "block rounded-lg px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100"
+                  : "block rounded-lg px-4 py-2 text-sm font-medium text-gray-700 bg-gray-200 "
+              } `}
             >
               {t("home")}
             </Link>
@@ -89,6 +93,6 @@ const Sidebar = ({ isVisible }) => {
       )}
     </div>
   );
-};
+});
 
 export default Sidebar;
