@@ -34,10 +34,11 @@ function Competion() {
       const eventIds = data.events.map((event) => event.id);
       setEvents(eventIds);
 
-      // Filtrar los competidores que estan aceptados
+      // Filtrar los competidores que estan aceptados y que su registration no sea null
       const persons = data.persons.filter(
-        (person) => person.registration.status === "accepted"
+        (person) => person.registration && person.registration.status === "accepted"
       );
+
       setCountPersons(persons.length);
       // Contar la cantidad de competidores por evento
       const competitorsCountByEvent = {};
@@ -211,7 +212,7 @@ function Competion() {
       </div>
 
       <div className="lg:flex grid lg:justify-between gap-4 w-full">
-        <select
+        {countPersons > 0 && <><select
           className="w-full px-4 py-2 mt-4 text-gray-700 bg-white border border-gray-300 rounded-md focus:border-blue-500 focus:outline-none focus:ring h-10"
           name="groupingOption"
           id="groupingOption"
@@ -223,26 +224,27 @@ function Competion() {
           <option value="speedLast">{t("speedLast")}</option>
         </select>
 
-        <button
-          className="bg-blue-500 w-full hover:bg-blue-400 text-white py-2 px-4 border-b-4 transition-all duration-500 rounded-2xl mt-4 mr-2 h-auto"
-          onClick={() => generateGroup()}
-        >
-          {t("generate-groups")}
-        </button>
+          <button
+            className="bg-blue-500 w-full hover:bg-blue-400 text-white py-2 px-4 border-b-4 transition-all duration-500 rounded-2xl mt-4 mr-2 h-auto"
+            onClick={() => generateGroup()}
+          >
+            {t("generate-groups")}
+          </button>
 
-        <button
-          className="bg-blue-500 w-full hover:bg-blue-400 text-white py-2 px-4 border-b-4 transition-all duration-500 rounded-2xl mt-4 mr-2 h-auto"
-          onClick={() => copyEmails()}
-        >
-          {t("copy-accepted-emails")}
-        </button>
+          <button
+            className="bg-blue-500 w-full hover:bg-blue-400 text-white py-2 px-4 border-b-4 transition-all duration-500 rounded-2xl mt-4 mr-2 h-auto"
+            onClick={() => copyEmails()}
+          >
+            {t("copy-accepted-emails")}
+          </button>
 
-        <button
-          className="bg-blue-500 w-full hover:bg-blue-400 text-white py-2 px-4 border-b-4 transition-all duration-500 rounded-2xl mt-4 mr-2 h-auto"
-          onClick={() => copyEmails(false)}
-        >
-          {t("copy-pending-emails")}
-        </button>
+          <button
+            className="bg-blue-500 w-full hover:bg-blue-400 text-white py-2 px-4 border-b-4 transition-all duration-500 rounded-2xl mt-4 mr-2 h-auto"
+            onClick={() => copyEmails(false)}
+          >
+            {t("copy-pending-emails")}
+          </button>
+        </>}
       </div>
 
       <div className="mt-4">
