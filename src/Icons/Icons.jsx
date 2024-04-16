@@ -7,8 +7,6 @@ export const IconTeamMaster = (props) => (
     viewBox="65 170.271 128.901 129.457"
     style={{
       verticalAlign: "middle",
-      marginRight: "5px",
-      marginBottom: "-5px",
     }}
     {...props}
   >
@@ -61,7 +59,6 @@ export const SortIcon = ({ className }) => (
   </svg>
 );
 
-
 export const CheckIcon = ({ className }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -73,11 +70,7 @@ export const CheckIcon = ({ className }) => (
     stroke="currentColor"
     className={className}
   >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      d="M5 13l4 4L19 7"
-    />
+    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
   </svg>
 );
 
