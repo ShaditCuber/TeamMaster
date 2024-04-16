@@ -30,16 +30,16 @@ const Navbar = ({ showNav, setShowNav }) => {
   return (
     <header className={`${!user ? "bg-white border-b fixed w-full z-10" : ""}`}>
       <div
-        className={`mx-auto flex justify-between h-16 items-center gap-8 px-4 sm:px-6 lg:px-8 ${
+        className={`mx-auto flex justify-between h-16 items-center  px-2 sm:px-6 lg:px-8 ${
           !user && "max-w-screen-xl"
         }`}
       >
         {!user ? (
-          <div className="flex items-center justify-center">
+          <div className="flex items-center justify-center gap-2">
             <IconTeamMaster width={40} height={40} />
             <a
               href="#"
-              className="mt-4 text-xl font-semibold mb-4 text-red-500 inline-flex items-center mx-4 xl:text-3xl"
+              className="text-xl font-semibold text-red-500 inline-flex items-center sm:text-3xl"
             >
               Team<span className="text-blue-500">Master</span>
             </a>
@@ -47,7 +47,7 @@ const Navbar = ({ showNav, setShowNav }) => {
               href="https://github.com/ShaditCuber/TeamMaster"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-black ml-2 hover:text-blue-500"
+              className="text-black hover:text-blue-500 ml-0 sm:ml-2"
             >
               {!user && <GitHub fill="black" className="hover:red" />}
             </a>
@@ -67,7 +67,7 @@ const Navbar = ({ showNav, setShowNav }) => {
         <div>
           <label
             htmlFor="HeadlineAct"
-            className="block text-md font-medium text-gray-900"
+            className="block text-sm sm:text-base text-center font-medium text-gray-900"
           >
             {t("language")}
           </label>
@@ -75,7 +75,7 @@ const Navbar = ({ showNav, setShowNav }) => {
           <select
             name="HeadlineAct"
             id="HeadlineAct"
-            className="mt-1.5 w-full rounded-lg border border-gray-300 text-gray-700 sm:text-md"
+            className="w-full rounded-lg border border-gray-300 text-gray-700 text-sm sm:text-base"
             value={savedLanguage || "es"}
             onChange={(e) => changeLanguage(e)}
           >
