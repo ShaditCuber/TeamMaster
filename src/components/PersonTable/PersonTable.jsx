@@ -18,6 +18,7 @@ const PersonTable = ({ wcif, events, groupsByEvent }) => {
     const [urlEmptyScoreCard, setUrlEmptyScoreCard] = useState("");
     const [urlGroupsPDF, setUrlGroupsPDF] = useState("");
     const [urlGroupCSV, setUrlGroupCSV] = useState("");
+    const [namePDF, setNamePDF] = useState("");
     const [image, setImage] = useState(null);
 
     const mutateGenerateScoreCard = useGenerateScoreSheet();
@@ -138,6 +139,7 @@ const PersonTable = ({ wcif, events, groupsByEvent }) => {
         setUrlScoreCard("");
         setUrlGroupsPDF("");
         setUrlGroupCSV("");
+        setNamePDF("");
 
         wcif.lang = languageScoreCard;
 
@@ -163,6 +165,7 @@ const PersonTable = ({ wcif, events, groupsByEvent }) => {
         setUrlScoreCard(response.scoreCard);
         setUrlGroupsPDF(response.groupsPDF);
         setUrlGroupCSV(response.groupsCSV);
+        setNamePDF(response.namesPDF);
     };
 
     const downloadImages = async () => {
@@ -435,6 +438,18 @@ const PersonTable = ({ wcif, events, groupsByEvent }) => {
                             {t("download-groups-csv")}
                         </a>
                     )}
+                </div>
+                <div>
+                    {namePDF && (
+                        <a
+                            href={namePDF}
+                            download="names.pdf"
+                            className="block py-2 px-4 rounded-lg bg-blue-500 text-white font-semibold hover:bg-blue-600"
+                        >
+                            {t("download-names")}
+                        </a>
+                    )}
+
                 </div>
             </div>
         </div>
