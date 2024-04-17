@@ -52,5 +52,6 @@
     "download-process": "The download process has started, please wait a few seconds",
     "copy-accepted-emails": "Copy accepted emails",
     "copy-pending-emails": "Copy pending emails",
-    "copy-emails": "Copy emails to clipboard"
+    "copy-emails": "Copy emails to clipboard",
+    "download-names": "Download Names Competitors and IDS"
 }
