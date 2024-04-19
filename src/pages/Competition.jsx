@@ -171,7 +171,7 @@ function Competion() {
           <tbody>
             <tr>
               <td className="px-4 py-2 font-semibold border">
-                {t("categories")}
+                {t("competitors")}
               </td>
               {events.map((eventId) => (
                 <td key={eventId} className="px-4 py-2 border">
