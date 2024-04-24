@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { useAvatarZip } from "../../queries/images";
 import { useGenerateScoreSheet } from "../../queries/groups";
 import { CheckIcon, ClearIcon, SortIcon } from "../../Icons/Icons";
+import Loader from "../Loader/Loader";
 
 const PersonTable = ({ wcif, events, groupsByEvent }) => {
     const [editedGroups, setEditedGroups] = useState({});
@@ -20,6 +21,8 @@ const PersonTable = ({ wcif, events, groupsByEvent }) => {
     const [urlGroupCSV, setUrlGroupCSV] = useState("");
     const [namePDF, setNamePDF] = useState("");
     const [image, setImage] = useState(null);
+    const [loadingScoreCards, setLoadingScoreCards] = React.useState(false);
+
 
     const mutateGenerateScoreCard = useGenerateScoreSheet();
     const mutateAvatarZip = useAvatarZip();
@@ -135,6 +138,7 @@ const PersonTable = ({ wcif, events, groupsByEvent }) => {
     // }, {});
 
     const generateScoreCard = async () => {
+        setLoadingScoreCards(true);
         setUrlEmptyScoreCard("");
         setUrlScoreCard("");
         setUrlGroupsPDF("");
@@ -159,13 +163,13 @@ const PersonTable = ({ wcif, events, groupsByEvent }) => {
             formData.append("image", image);
         }
 
-        // llamamos a papi
         const response = await mutateGenerateScoreCard.mutateAsync(formData);
         setUrlEmptyScoreCard(response.emptyScoreCard);
         setUrlScoreCard(response.scoreCard);
         setUrlGroupsPDF(response.groupsPDF);
         setUrlGroupCSV(response.groupsCSV);
         setNamePDF(response.namesPDF);
+        setLoadingScoreCards(false);
     };
 
     const downloadImages = async () => {
@@ -191,6 +195,10 @@ const PersonTable = ({ wcif, events, groupsByEvent }) => {
 
         setUrlZip(response.url);
     };
+
+    if (loadingScoreCards) {
+        return <Loader />;
+    }
 
     return (
         <div className="mt-5 bg-white p-4 rounded-2xl">
