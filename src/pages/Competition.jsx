@@ -19,6 +19,7 @@ function Competion() {
   const [loadingGroups, setLoadingGroups] = React.useState(false);
   const mutationGenerateGroups = useGenerateGroups();
   const [groupingOption, setGroupingOption] = React.useState("random");
+  const [showPersonTable, setShowPersonTable] = React.useState(false);
   let competition_id;
 
   const location = useLocation();
@@ -73,6 +74,7 @@ function Competion() {
   }, [competitorsByEvent, groupsByEvent]);
 
   const handleGroupsChange = (eventId, e) => {
+    setShowPersonTable(false);
     e.preventDefault();
     const value = parseInt(e.target.value, 10);
     setGroupsByEvent({
@@ -103,6 +105,7 @@ function Competion() {
     setWcif(data_groups);
     if (data_groups) {
       setLoadingGroups(false);
+      setShowPersonTable(true);
     }
   };
 
@@ -247,17 +250,19 @@ function Competion() {
         </>}
       </div>
 
-      <div className="mt-4">
-        {wcif?.persons?.length > 0 ? (
-          <PersonTable
-            wcif={wcif}
-            events={data.events}
-            groupsByEvent={groupsByEvent}
-          />
-        ) : (
-          ""
-        )}
-      </div>
+      {showPersonTable && (
+        <div className="mt-4">
+          {wcif?.persons?.length > 0 ? (
+            <PersonTable
+              wcif={wcif}
+              events={data.events}
+              groupsByEvent={groupsByEvent}
+            />
+          ) : (
+            ""
+          )}
+        </div>
+      )}
     </div>
   );
 }
