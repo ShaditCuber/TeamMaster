@@ -112,13 +112,15 @@ function Competion() {
   const copyEmails = (accepted = true) => {
     const emails = [];
     data.persons.forEach((person) => {
-      if (accepted) {
-        if (person.registration.status === "accepted") {
-          emails.push(person.email);
-        }
-      } else {
-        if (person.registration.status !== "accepted") {
-          emails.push(person.email);
+      if (person.registration) {
+        if (accepted) {
+          if (person.registration.status === "accepted") {
+            emails.push(person.email);
+          }
+        } else {
+          if (person.registration.status !== "accepted") {
+            emails.push(person.email);
+          }
         }
       }
     });
