@@ -20,6 +20,12 @@ export const callWCA = async (url) => {
   return response.data;
 };
 
+export const patchWCA = async (url, data) => {
+  url = `/api/v0/${url}`;
+  const response = await clienteAxios.patch(url, data);
+  return response.data;
+}
+
 clienteAxios.interceptors.request.use(
   function (config) {
     const token = getToken();

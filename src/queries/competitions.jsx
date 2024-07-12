@@ -1,4 +1,4 @@
-import { callWCA } from "../util/clienteAxios";
+import { callWCA, patchWCA } from "../util/clienteAxios";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
 const fetchCompetitions = async () => {
@@ -9,6 +9,10 @@ const fetchCompetitions = async () => {
         "sort": "start_date"
     }
     return callWCA('competitions?' + new URLSearchParams(params).toString());
+}
+
+const postWcif = async (data, competitionId) => {
+    return patchWCA(`competitions/${competitionId}/wcif`, data);
 }
 
 const fetchCompetition = async (competitionId) => {
@@ -28,5 +32,13 @@ export const useCompetition = (competitionId) => {
         queryKey: ['competition', competitionId],
         queryFn: () => fetchCompetition(competitionId),
         keepPreviousData: true,
+    });
+}
+
+export const useSaveWcif = () => {
+    return useMutation({
+        mutationFn: (data) => {
+            return postWcif(data, data.id);
+        }
     });
 }

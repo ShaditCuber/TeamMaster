@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useCompetition } from "../queries/competitions";
+import { useCompetition, useSaveWcif } from "../queries/competitions";
 import { useLocation, Link } from "react-router-dom";
 import Loader from "../components/Loader/Loader";
 import { useTranslation } from "react-i18next";
@@ -20,6 +20,10 @@ function Competion() {
   const mutationGenerateGroups = useGenerateGroups();
   const [groupingOption, setGroupingOption] = React.useState("random");
   const [showPersonTable, setShowPersonTable] = React.useState(false);
+
+
+  const mutationSaveWcif = useSaveWcif();
+
   let competition_id;
 
   const location = useLocation();
@@ -129,6 +133,29 @@ function Competion() {
       toast.success(t("copy-emails"), { duration: 1500 });
     });
   };
+
+  const saveWcif = () => {
+
+    // const keysToRemove = ['222','333', '444', '555', '666', '777', 'clock', 'minx', 'sq1', 'pyram'];
+
+    // // Recorre cada persona en el objeto wcif y elimina las claves específicas
+    // wcif.persons.forEach(person => {
+    //   keysToRemove.forEach(key => {
+    //     delete person[key];
+    //   });
+    // });
+
+    // console.log(wcif)
+
+    const response = mutationSaveWcif.mutate(wcif);
+
+
+
+    if (response) {
+      console.log('xd')
+    }
+  };
+
 
   if (isLoading || !data || loadingGroups) {
     return <Loader />;
@@ -249,6 +276,12 @@ function Competion() {
           >
             {t("copy-pending-emails")}
           </button>
+          {/* <button
+            className="bg-blue-500 w-full hover:bg-blue-400 text-white py-2 px-4 border-b-4 transition-all duration-500 rounded-2xl mt-4 mr-2 h-auto"
+            onClick={() => saveWcif()}
+          >
+            Guardar WCIF
+          </button> */}
         </>}
       </div>
 
