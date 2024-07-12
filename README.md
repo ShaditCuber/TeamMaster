@@ -39,3 +39,6 @@ Explore all the features that TeamMaster has to offer and simplify the organizat
 Contributions are welcome! If you have any ideas to improve TeamMaster, feel free to create an issue or send a pull request.
 
 If you need the .env credentials, please leave an email at [FelipeBastidas](mailto:felipeignacio.fibl@gmail.com) and I will respond as soon as possible.
+
+
+Hecho con ♥️ por Felipe Ignacio Bastidas López
