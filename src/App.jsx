@@ -16,10 +16,10 @@ export default function App() {
         <UsuarioProvider>
           <BrowserRouter>
             <RouterApp />
+            <Analytics />
           </BrowserRouter>
         </UsuarioProvider>
       </QueryClientProvider>
-      <Analytics />
     </>
   );
 }
