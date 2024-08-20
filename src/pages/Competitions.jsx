@@ -12,6 +12,14 @@ const Competitions = () => {
     return <Loader />;
   }
 
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const year = date.getFullYear();
+    return `${day}-${month}-${year}`;
+  };
+
   return (
     <div className="container mx-auto px-4 animate-fade-in animate-delay-200 animate-duration-slow">
       <h1 className="text-2xl font-bold mb-4">{t("competitions")}</h1>
@@ -34,7 +42,7 @@ const Competitions = () => {
 
           <tbody className="divide-y divide-gray-200">
             {data?.length > 0 ? (
-              data?.map(({ id, name, start_date, delegates } = competition) => (
+              data?.map(({ id, name, start_date, end_date, delegates } = competition) => (
                 <tr key={id}>
                   <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
                     <Link
@@ -46,10 +54,21 @@ const Competitions = () => {
                     </Link>
                   </td>
                   <td className="whitespace-nowrap px-4 py-2 text-gray-700">
-                    {start_date}
+                    {`${formatDate(start_date)} - ${formatDate(end_date)}`}
                   </td>
                   <td className="whitespace-nowrap px-4 py-2 text-gray-700">
-                    {delegates[0]?.name}
+                    <ul className="list-none">
+                      {delegates.map(({ name, url }) => (
+                        <li key={url}>
+                          <a
+                            href={url}
+                            className="text-blue-500 hover:text-blue-700 block"
+                          >
+                            {name}
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
                   </td>
                 </tr>
               ))

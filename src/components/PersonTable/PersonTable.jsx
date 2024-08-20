@@ -4,6 +4,7 @@ import { useAvatarZip } from "../../queries/images";
 import { useGenerateScoreSheet } from "../../queries/groups";
 import { CheckIcon, ClearIcon, SortIcon } from "../../Icons/Icons";
 import Loader from "../Loader/Loader";
+import { useSaveWcif } from "../../queries/competitions";
 
 const PersonTable = ({ wcif, events, groupsByEvent }) => {
     const [editedGroups, setEditedGroups] = useState({});
@@ -23,6 +24,7 @@ const PersonTable = ({ wcif, events, groupsByEvent }) => {
     const [image, setImage] = useState(null);
     const [loadingScoreCards, setLoadingScoreCards] = React.useState(false);
 
+    const mutateSaveWcif = useSaveWcif();
 
     const mutateGenerateScoreCard = useGenerateScoreSheet();
     const mutateAvatarZip = useAvatarZip();
@@ -138,6 +140,9 @@ const PersonTable = ({ wcif, events, groupsByEvent }) => {
     // }, {});
 
     const generateScoreCard = async () => {
+        patchWCIF();
+        // quitar esto
+        return;
         setLoadingScoreCards(true);
         setUrlEmptyScoreCard("");
         setUrlScoreCard("");
@@ -195,6 +200,113 @@ const PersonTable = ({ wcif, events, groupsByEvent }) => {
 
         setUrlZip(response.url);
     };
+
+    const resetAssignmentsWCIF = () => {
+        wcif.persons.forEach((person) => {
+            person.assignments = [];
+        });
+    };
+
+    const createAssignmentForPerson = (person,activityCode, assignmentCode) => {
+        person.assignments.push({
+            activityId: activityCode,
+            assignmentCode: assignmentCode,
+        });
+    }
+
+    const createAssignmentInWCIF = () => {
+
+        resetAssignmentsWCIF(wcif);
+
+        for (const venue of wcif.schedule.venues) {
+            for (const room of venue.rooms) {
+                for (const activity of room.activities) {
+                    for (const childActivity of activity.childActivities.filter(a => a.activityCode.includes('-r1-g'))) {
+
+                        console.log(childActivity)
+                        const eventId = childActivity.activityCode.split('-')[0];
+                        // obtener los competidores que dentro de sus propiedades tenga el eventId
+                        const competitors = wcif.persons.filter(person => person[eventId] !== undefined && person[eventId] === parseInt(childActivity.activityCode.split('-r1-g')[1]));
+
+                        competitors.forEach(competitor => {
+                            createAssignmentForPerson(competitor, childActivity.id, 'competitor')
+                        });
+                    }
+                }
+            }
+        }
+    };
+
+    const patchWCIF = () => {
+        createAssignmentInWCIF(wcif)
+
+        const persons = wcif.persons.map(p => (
+            {
+                assignments: p.assignments,
+                name: p.name,
+                registrantId: p.registrantId,
+                wcaId: p.wcaId,
+                wcaUserId: p.wcaUserId
+            })
+        )
+
+        const wcifToSend = {
+            id: wcif.id,
+            schedule: wcif.schedule,
+            persons: persons
+        }
+
+        // mutateSaveWcif.mutate(wcif);
+        mutateSaveWcif.mutate(wcifToSend);
+
+        return;
+        // recorrer persona por persona y agregar un array assignaments
+        // agregar un array de assignaments a cada persona
+        // agregar un array de assignaments a cada persona
+
+        const updatedPersons = wcif.persons.map((person) => {
+            const assignments = [];
+            events.forEach((event) => {
+                // obtener el grupo de la persona en el evento y si no tiene se pasa al siguiente
+                const group = person[event.id];
+                if (!group) {
+                    return;
+                }
+                // Obtener en schedule venues rooms en la posicion 0 , y en activitiee buscar en la key activityCode event.id-r1
+                const activityCode = `${event.id}-r1`;
+                const activity = wcif.schedule.venues[0].rooms[0].activities.find(
+                    (activity) => activity.activityCode === activityCode
+                );
+                if (!activity) {
+                    return;
+                }
+                // buscar dentro del activity el child activitiees y buscar el group
+                const childactivity = `${event.id}-r1-g${group}`;
+                const childActivity = activity.childActivities.find(
+                    (childActivity) => childActivity.activityCode === childactivity
+                );
+                if (!childActivity) {
+                    return;
+                }
+
+                // agregar el assignament
+                assignments.push({
+                    activityId: childActivity.id,
+                    assignmentCode: "competitor",
+                });
+            });
+            return {
+                ...person,
+                assignments: assignments,
+            };
+        }
+
+        );
+        wcif.persons = updatedPersons;
+
+        mutateSaveWcif.mutate(wcif);
+    };
+
 
     if (loadingScoreCards) {
         return <Loader />;
@@ -400,6 +512,7 @@ const PersonTable = ({ wcif, events, groupsByEvent }) => {
                 >
                     {t("generate-scoreCard")}
                 </button>
+
             </div>
 
             <div className="grid md:grid-cols-2 gap-4 mt-4 ">
