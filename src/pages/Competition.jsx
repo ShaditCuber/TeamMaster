@@ -12,6 +12,7 @@ function Competion() {
 
   const [wcif, setWcif] = React.useState([]);
   const [countPersons, setCountPersons] = React.useState(0);
+  const [fromWCIF, setFromWCIF] = React.useState(false);
   const [events, setEvents] = React.useState([]);
   const [competitorsByEvent, setCompetitorsByEvent] = React.useState({});
   const [groupsByEvent, setGroupsByEvent] = React.useState([]);
@@ -156,6 +157,15 @@ function Competion() {
     }
   };
 
+  const LoadFromWCA = () => {
+    console.log(data);
+    setFromWCIF(true);
+    setWcif(data);
+    setLoadingGroups(false);    
+    setShowPersonTable(true);
+    // Cargar datos de la WCA
+  }
+
 
   if (isLoading || !data || loadingGroups) {
     return <Loader />;
@@ -276,6 +286,12 @@ function Competion() {
           >
             {t("copy-pending-emails")}
           </button>
+          <button
+            className="bg-blue-500 w-full hover:bg-blue-400 text-white py-2 px-4 border-b-4 transition-all duration-500 rounded-2xl mt-4 mr-2 h-auto"
+            onClick={() => LoadFromWCA()}
+          >
+            {t("load-from-wca")}
+          </button>
           {/* <button
             className="bg-blue-500 w-full hover:bg-blue-400 text-white py-2 px-4 border-b-4 transition-all duration-500 rounded-2xl mt-4 mr-2 h-auto"
             onClick={() => saveWcif()}
@@ -292,6 +308,7 @@ function Competion() {
               wcif={wcif}
               events={data.events}
               groupsByEvent={groupsByEvent}
+              fromWCIF={fromWCIF}
             />
           ) : (
             ""
