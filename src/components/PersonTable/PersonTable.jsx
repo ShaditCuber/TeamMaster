@@ -6,7 +6,7 @@ import { CheckIcon, ClearIcon, SortIcon } from "../../Icons/Icons";
 import Loader from "../Loader/Loader";
 import { useSaveWcif } from "../../queries/competitions";
 
-const PersonTable = ({ wcif, events, groupsByEvent }) => {
+const PersonTable = ({ wcif, events, groupsByEvent,fromWCIF }) => {
     const [editedGroups, setEditedGroups] = useState({});
     const [showWcaId, setShowWcaId] = useState(true);
     const [languageScoreCard, setLanguageScoreCard] = useState("es");
@@ -78,11 +78,16 @@ const PersonTable = ({ wcif, events, groupsByEvent }) => {
         wcif.persons = updatedPersons;
     };
 
-    const getEventGroup = (person, event) => {
-        const key = `${person.name}-${event.id}`;
-        return editedGroups[key] !== undefined
-            ? editedGroups[key]
-            : person[event.id] || "";
+    const getEventGroup = (person, event,activityCode=0) => {
+        if (!fromWCIF) {
+            const key = `${person.name}-${event.id}`;
+            console.log(key)
+            return editedGroups[key] !== undefined
+                ? editedGroups[key]
+                : person[event.id] || "";
+        }
+
+
     };
 
     const sortBy = (key) => {
@@ -141,8 +146,6 @@ const PersonTable = ({ wcif, events, groupsByEvent }) => {
 
     const generateScoreCard = async () => {
         patchWCIF();
-        // quitar esto
-        return;
         setLoadingScoreCards(true);
         setUrlEmptyScoreCard("");
         setUrlScoreCard("");

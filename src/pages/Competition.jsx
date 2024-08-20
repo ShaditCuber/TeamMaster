@@ -286,12 +286,12 @@ function Competion() {
           >
             {t("copy-pending-emails")}
           </button>
-          <button
+          {/* <button
             className="bg-blue-500 w-full hover:bg-blue-400 text-white py-2 px-4 border-b-4 transition-all duration-500 rounded-2xl mt-4 mr-2 h-auto"
             onClick={() => LoadFromWCA()}
           >
             {t("load-from-wca")}
-          </button>
+          </button> */}
           {/* <button
             className="bg-blue-500 w-full hover:bg-blue-400 text-white py-2 px-4 border-b-4 transition-all duration-500 rounded-2xl mt-4 mr-2 h-auto"
             onClick={() => saveWcif()}
