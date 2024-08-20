@@ -213,7 +213,8 @@ const PersonTable = ({ wcif, events, groupsByEvent,fromWCIF }) => {
     const createAssignmentForPerson = (person,activityCode, assignmentCode) => {
         person.assignments.push({
             activityId: activityCode,
-            assignmentCode: assignmentCode,
+            stationNumber: 1,
+            assignmentCode: assignmentCode
         });
     }
 
