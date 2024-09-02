@@ -54,5 +54,6 @@
     "copy-pending-emails": "Copy pending emails",
     "copy-emails": "Copy emails to clipboard",
     "download-names": "Download Names Competitors and IDS",
-    "load-from-wca" : "Load Groups from WCA"
+    "load-from-wca" : "Load Groups from WCA",
+    "score-card": "ScoreCard"
 }

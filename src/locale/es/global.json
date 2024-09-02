@@ -54,5 +54,6 @@
   "copy-pending-emails": "Copiar emails pendientes",
   "copy-emails": "Emails copiados al portapapeles",
   "download-names": "Descargar Nombres y ID's de Competidores",
-  "load-from-wca" : "Cargar Grupos desde la WCA"
+  "load-from-wca" : "Cargar Grupos desde la WCA",
+  "score-card": "ScoreCard"
 }
