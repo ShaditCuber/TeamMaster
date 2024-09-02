@@ -16,6 +16,9 @@ const Sidebar = forwardRef(({ showNav, setShowNav }, ref) => {
   const sidebarClass = showNav
     ? "translate-x-0 opacity-100 relative"
     : "-translate-x-full absolute";
+  
+
+
 
   return (
     <div
@@ -43,9 +46,9 @@ const Sidebar = forwardRef(({ showNav, setShowNav }, ref) => {
               to="/competitions"
               // HERE YOU MUST CHANGE IT FOR YOURS ROUTES
               className={`${
-                location.pathname === "/"
-                  ? "block rounded-lg px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100"
-                  : "block rounded-lg px-4 py-2 text-sm font-medium text-gray-700 bg-gray-200 "
+                location.pathname === "/competitions"
+                  ? "block rounded-lg px-4 py-2 text-sm font-medium text-gray-700 bg-gray-200"
+                : "block rounded-lg px-4 py-2 text-sm font-medium text-gray-700  hover:bg-gray-100 "
               } `}
             >
               {t("home")}
@@ -66,6 +69,17 @@ const Sidebar = forwardRef(({ showNav, setShowNav }, ref) => {
               className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100"
             >
               {t("contact")}
+            </a>
+          </li>
+          <li>
+            <a
+              href="/scoreCard"
+              className={`${location.pathname === "/scoreCard"
+                  ? "block rounded-lg px-4 py-2 text-sm font-medium text-gray-700 bg-gray-200"
+                  : "block rounded-lg px-4 py-2 text-sm font-medium text-gray-700  hover:bg-gray-100 "
+                } `}
+            >
+              {t("score-card")}
             </a>
           </li>
         </ul>
