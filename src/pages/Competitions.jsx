@@ -4,7 +4,7 @@ import Loader from "../components/Loader/Loader";
 import { useCompetitions } from "../queries/competitions";
 import { useTranslation } from "react-i18next";
 
-const Competitions = () => {
+const Competitions = ({isScorecard = false}) => {
   const { data, isLoading } = useCompetitions();
   const { t } = useTranslation("global");
 
@@ -19,6 +19,8 @@ const Competitions = () => {
     const year = date.getFullYear();
     return `${day}-${month}-${year}`;
   };
+
+  const toString = isScorecard ? "scoreCard" : "competitions";
 
   return (
     <div className="container mx-auto px-4 animate-fade-in animate-delay-200 animate-duration-slow">
@@ -47,14 +49,17 @@ const Competitions = () => {
                   <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
                     <Link
                       state={{ competition_id: id }}
-                      to={`/competitions/${id}`}
+                      to={`/${toString}/${id}`}
                       className="text-blue-500 hover:text-blue-700"
                     >
                       {name}
                     </Link>
                   </td>
                   <td className="whitespace-nowrap px-4 py-2 text-gray-700">
-                    {`${formatDate(start_date)} - ${formatDate(end_date)}`}
+                    {/* si el dia de inicio y termino son iguales solo poner el de inicio */}
+                    {
+                      `${formatDate(start_date)} ` + (start_date !== end_date ? ` - ${formatDate(end_date)}` : "") 
+                    }
                   </td>
                   <td className="whitespace-nowrap px-4 py-2 text-gray-700">
                     <ul className="list-none">
