@@ -15,6 +15,7 @@
     "@react-pdf/renderer": "^3.4.4",
     "@tanstack/react-query": "^5.28.4",
     "@vercel/analytics": "^1.3.1",
+    "@wca/helpers": "^1.1.5",
     "axios": "^1.6.8",
     "i18next": "^23.10.1",
     "react": "^18.2.0",
