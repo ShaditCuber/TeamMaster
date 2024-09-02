@@ -5,7 +5,7 @@ const fetchCompetitions = async () => {
     const oneWeekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
     const params = {
         "managed_by_me": true,
-        // "start": oneWeekAgo.toISOString(),
+        "start": oneWeekAgo.toISOString(),
         "sort": "start_date"
     }
     return callWCA('competitions?' + new URLSearchParams(params).toString());
