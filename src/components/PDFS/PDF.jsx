@@ -11,34 +11,89 @@ import IconTeamMaster from '/teamMaster.png';
 import CK from '/CK.png';
 import React from 'react';
 import { formatCentiseconds } from '@wca/helpers';
+import { useTranslation } from "react-i18next";
 
 
-function PDF({ imageUrl ,competitors, tournamentName, category, totalGroups, round }) {
+
+const PDF= ({ imageUrl = null ,competitors, tournamentName, category, totalGroups, round, i18n}) => {
 
     const groupNum = 1;
     // const registrantId = '2021DO01';
     // const competitorName = 'Juan Pérez';
     // const wcaId = '2019PERE01';
-    const timeLimit = '10:00';
-    const timeCuttof = '02:35'
+    // const [t, i18n] = useTranslation("global");
+
+    // me psan i18n como prop, como obtengo la t de i18n
+
+    const { t } = i18n;
+
+    const enText = {
+        "round": "Round",
+        "group": "Group",
+        "of": "of",
+        "333": "3x3x3 Cube",
+        "222": "2x2x2 Cube",
+        "444": "4x4x4 Cube",
+        "555": "5x5x5 Cube",
+        "minx": "Megaminx",
+        "pyram": "Pyraminx",
+        "clock": "Clock",
+        "skewb": "Skewb",
+        "sq1": "Square-1",
+        "333oh": "3x3x3 One-Handed",
+        "666": "6x6x6 Cube",
+        "777": "7x7x7 Cube",
+        "333bf": "3x3x3 Blindfolded",
+        "333fm": "3x3x3 Fewest Moves",
+        "333ft": "3x3x3 With Feet",
+        "444bf": "4x4x4 Blindfolded",
+        "555bf": "5x5x5 Blindfolded",
+        "333mbf": "3x3x3 Multi-Blind"
+    }
+
+    const esText = {
+        "round": "Ronda",
+        "group": "Grupo",
+        "of": "de",
+        "333": "Cubo 3x3x3",
+        "222": "Cubo 2x2x2",
+        "444": "Cubo 4x4x4",
+        "555": "Cubo 5x5x5",
+        "minx": "Megaminx",
+        "pyram": "Pyraminx",
+        "clock": "Clock",
+        "skewb": "Skewb",
+        "sq1": "Square-1",
+        "333oh": "3x3x3 Una Mano",
+        "666": "Cubo 6x6x6",
+        "777": "Cubo 7x7x7",
+        "333bf": "3x3x3 A Ciegas",
+        "333fm": "3x3x3 Menos Movimientos",
+        "333ft": "3x3x3 Con los Pies",
+        "444bf": "4x4x4 A Ciegas",
+        "555bf": "5x5x5 A Ciegas",
+        "333mbf": "3x3x3 Multiples A Ciegas",
+    }
 
 
-    // const listCompetitors = [
-    //     {
-    //         registrantID: 2,
-    //         name: 'Juan Pérez',
-    //         wcaID: '2019PERE01',
-    //     },
-    //     {
-    //         registrantID: 1,
-    //         name: 'Pedro Pérez',
-    //         wcaID: '2019PERE02',
-    //     },
-    // ]
+
+    console.log(i18n, 'i18n')
+
+    
+
+    console.log(i18n.language, 'idioma')
+
+    // obtener las t aqui sin i18n
+    const roundText = i18n.language === 'en' ? enText['round'] : esText['round'];
+    const groupText = i18n.language === 'en' ? enText['group'] : esText['group'];
+    const categoryText = i18n.language === 'en' ? enText[category] : esText[category];
+    const ofText = i18n.language === 'en' ? enText['of'] : esText['of'];
+    const resultText = i18n.language === 'en' ? 'Result DNF if' : 'Resultado DNF si';
+    const continueIf = i18n.language === 'en' ? 'Continue if' : 'Continua si';
+    
+   
 
     console.log(competitors[0]);
-
-
     // transformar la imagen en escala de grises con css
 
     // const img = image;
@@ -204,9 +259,9 @@ function PDF({ imageUrl ,competitors, tournamentName, category, totalGroups, rou
                             <Image src={IconTeamMaster} style={styles.logo} />
 
                             <Text style={styles.title}>{tournamentName}</Text>
-                            <Text style={styles.category}>{category}</Text>
+                            <Text style={styles.category}>{categoryText}</Text>
                             <Text style={styles.header}>
-                                Ronda {round} | Grupo {groupNum} de {totalGroups}
+                                {roundText} {round} | {groupText} {groupNum} {ofText} {totalGroups}
                             </Text>
 
                             <View style={styles.table}>
@@ -216,7 +271,7 @@ function PDF({ imageUrl ,competitors, tournamentName, category, totalGroups, rou
                                 <View style={styles.tableRow}>
                                     <Text style={styles.narrowCell}>A</Text>
                                     <Text style={styles.narrowCell}>S</Text>
-                                    <Text style={styles.wideCell}>Resultado DNF SI &gt; = {formatCentiseconds(competitor.timeLimit)}</Text>
+                                    <Text style={styles.wideCell}>{resultText} &gt; = {formatCentiseconds(competitor.timeLimit)}</Text>
                                     <Text style={styles.narrowCell}>J</Text>
                                     <Text style={styles.narrowCell}>C</Text>
                                 </View>
@@ -233,7 +288,7 @@ function PDF({ imageUrl ,competitors, tournamentName, category, totalGroups, rou
                                 <Text style={styles.footer}>
                                     {
                                         competitor.timeCutoff
-                                            ? `------- Continúa si ${competitor.numberOfAttempts === 2 ? '1 o 2' : '1'} < ${formatCentiseconds(competitor.timeCutoff)} -------`
+                                            ? `------- ${continueIf} ${competitor.numberOfAttempts === 2 ? '1 o 2' : '1'} < ${formatCentiseconds(competitor.timeCutoff)} -------`
                                             : `-------  -------`
                                     }
                                 </Text>
@@ -263,10 +318,9 @@ function PDF({ imageUrl ,competitors, tournamentName, category, totalGroups, rou
                                 ))}
                             </View>
 
-                            <Image
-                                src={imageUrl}
-                                style={styles.watermark}
-                            />
+                            {
+                                imageUrl && <Image src={imageUrl} style={styles.watermark} />
+                            }
                         </View>
                     ))}
                 </Page>
