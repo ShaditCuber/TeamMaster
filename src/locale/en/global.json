@@ -56,6 +56,8 @@
     "download-names": "Download Names Competitors and IDS",
     "load-from-wca" : "Load Groups from WCA",
     "score-card": "ScoreCard",
+    "sync" : "Sync Results",
+    "group-split" : "Quantity of groups",
     "round" : "Round",
     "group": "Group",
     "333": "3x3x3 Cube",

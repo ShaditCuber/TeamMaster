@@ -56,6 +56,8 @@
   "download-names": "Descargar Nombres y ID's de Competidores",
   "load-from-wca" : "Cargar Grupos desde la WCA",
   "score-card": "ScoreCard",
+  "sync" : "Sincronizar Resultados",
+  "group-split" : "Cantidad de grupos",
   "round" : "Ronda",
   "group": "Grupo",
   "333": "Cubo 3x3x3",
