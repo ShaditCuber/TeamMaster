@@ -8,24 +8,11 @@ import {
     Font,
 } from '@react-pdf/renderer';
 import IconTeamMaster from '/teamMaster.png';
-import CK from '/CK.png';
 import React from 'react';
-import { formatCentiseconds } from '@wca/helpers';
-import { useTranslation } from "react-i18next";
 
 
 
-const PDF= ({ imageUrl = null ,competitors, tournamentName, category, totalGroups, round, i18n}) => {
-
-    const groupNum = 1;
-    // const registrantId = '2021DO01';
-    // const competitorName = 'Juan Pérez';
-    // const wcaId = '2019PERE01';
-    // const [t, i18n] = useTranslation("global");
-
-    // me psan i18n como prop, como obtengo la t de i18n
-
-    const { t } = i18n;
+const PDF = ({ imageUrl = null, competitors, tournamentName, category, categoryName, totalGroups, round, timeLimit, timeCutoff, numberOfAttempts, i18n }) => {
 
     const enText = {
         "round": "Round",
@@ -79,27 +66,17 @@ const PDF= ({ imageUrl = null ,competitors, tournamentName, category, totalGroup
 
     console.log(i18n, 'i18n')
 
-    
+
 
     console.log(i18n.language, 'idioma')
 
     // obtener las t aqui sin i18n
     const roundText = i18n.language === 'en' ? enText['round'] : esText['round'];
     const groupText = i18n.language === 'en' ? enText['group'] : esText['group'];
-    const categoryText = i18n.language === 'en' ? enText[category] : esText[category];
+    // const categoryText = i18n.language === 'en' ? enText[category] : esText[category];
     const ofText = i18n.language === 'en' ? enText['of'] : esText['of'];
     const resultText = i18n.language === 'en' ? 'Result DNF if' : 'Resultado DNF si';
     const continueIf = i18n.language === 'en' ? 'Continue if' : 'Continua si';
-    
-   
-
-    console.log(competitors[0]);
-    // transformar la imagen en escala de grises con css
-
-    // const img = image;
-
-    // document.getElementsByName('img').style.filter = 'grayscale(100%)';
-
 
 
     Font.register({
@@ -118,22 +95,6 @@ const PDF= ({ imageUrl = null ,competitors, tournamentName, category, totalGroup
         }
         return result;
     };
-
-    // def centiseconds_to_minutes_seconds(centiseconds):
-    // if centiseconds is None:
-    // return None
-    // seconds = centiseconds / 100
-
-    // minutes = int(seconds // 60)
-    // seconds %= 60
-
-    // time_string = "{:02}:{:02}".format(minutes, int(seconds))
-
-    // return time_string
-
-
-    
-
 
 
     const mean_of_three_events = [
@@ -245,9 +206,10 @@ const PDF= ({ imageUrl = null ,competitors, tournamentName, category, totalGroup
         },
     });
 
+    const textTimeCutoff = timeCutoff ? `------- ${continueIf} ${numberOfAttempts === 2 ? '1 o 2' : '1'} < ${timeCutoff} -------` : `-------  -------`;
 
     const rows = mean_of_three_events.includes(category) ? [3] : [3, 4, 5];
-    const fillRows = 3-rows.length;
+    const fillRows = 3 - rows.length;
     const competitorChunks = chunkArray(competitors, 4);
 
     return (
@@ -255,23 +217,23 @@ const PDF= ({ imageUrl = null ,competitors, tournamentName, category, totalGroup
             {competitorChunks.map((chunk, chunkIndex) => (
                 <Page size="A4" style={styles.page} key={chunkIndex}>
                     {chunk.map((competitor) => (
-                        <View style={styles.container} key={competitor.personId}>
+                        <View style={styles.container} key={competitor.registrantId}>
                             <Image src={IconTeamMaster} style={styles.logo} />
 
                             <Text style={styles.title}>{tournamentName}</Text>
-                            <Text style={styles.category}>{categoryText}</Text>
+                            <Text style={styles.category}>{categoryName}</Text>
                             <Text style={styles.header}>
-                                {roundText} {round} | {groupText} {groupNum} {ofText} {totalGroups}
+                                {roundText} {round} | {groupText} {competitor.groupNumber} {ofText} {totalGroups}
                             </Text>
 
                             <View style={styles.table}>
                                 <View style={styles.tableRow}>
-                                    <Text style={styles.competitor}>| {competitor.personId} | {competitor.name} | {competitor.wcaId} | </Text>
+                                    <Text style={styles.competitor}>| {competitor.registrantId} | {competitor.name} | {competitor.wcaId} | </Text>
                                 </View>
                                 <View style={styles.tableRow}>
                                     <Text style={styles.narrowCell}>A</Text>
                                     <Text style={styles.narrowCell}>S</Text>
-                                    <Text style={styles.wideCell}>{resultText} &gt; = {formatCentiseconds(competitor.timeLimit)}</Text>
+                                    <Text style={styles.wideCell}>{resultText} &gt; = {timeLimit}</Text>
                                     <Text style={styles.narrowCell}>J</Text>
                                     <Text style={styles.narrowCell}>C</Text>
                                 </View>
@@ -286,11 +248,12 @@ const PDF= ({ imageUrl = null ,competitors, tournamentName, category, totalGroup
                                 ))}
 
                                 <Text style={styles.footer}>
-                                    {
+                                    {/* {
                                         competitor.timeCutoff
                                             ? `------- ${continueIf} ${competitor.numberOfAttempts === 2 ? '1 o 2' : '1'} < ${formatCentiseconds(competitor.timeCutoff)} -------`
                                             : `-------  -------`
-                                    }
+                                    } */}
+                                    {textTimeCutoff}
                                 </Text>
 
 

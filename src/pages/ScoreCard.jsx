@@ -7,15 +7,18 @@ import { useTranslation } from "react-i18next";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import PDF from "../components/PDFS/PDF";
 import { pdf } from "@react-pdf/renderer";
-import { ClearIcon } from "../Icons/Icons";
+import { ClearIcon, SortIcon, SyncIcon, UploadIcon } from "../Icons/Icons";
+import CubiKoronel from "../test/CubiKoronelComplete.json";
+import { formatCentiseconds } from '@wca/helpers';
+
 
 const ScoreCard = () => {
 
-    const [roundsData, setRoundsData] = useState([]);
-    const [numberOfGroups, setNumberOfGroups] = useState(1);
+    // const [roundsData, setRoundsData] = useState([]);
+
+    const [groupSplit, setGroupSplit] = useState(2);
+    const [imageUrl, setImageUrl] = useState(null);
     const [loading, setLoading] = useState(false);
-    const [showScoreCard, setShowScoreCard] = useState(false);
-    const [categories, setCategories] = useState([]);
 
     const [t, i18n] = useTranslation("global");
 
@@ -33,171 +36,13 @@ const ScoreCard = () => {
     console.log(competition_id)
 
 
-    const { data, isLoading } = useCompetition(competition_id);
-    const [imageUrl, setImageUrl] = useState(null);
-
-
-    console.log(data)
-
-
-
-
-    // debo obtener los resultados de cada ronda
-
-    // useEffect(() => {
-    //     if (data) {
-    //         const newRoundsData = data.events.flatMap(event =>
-    //             event.rounds.map(round => {
-
-    //                 const { advancementCondition, results } = round;
-
-    //                 let filteredResults = [];
-    //                 if (advancementCondition?.type === 'percent') {
-    //                     const totalCompetitors = results.length;
-    //                     const count = Math.ceil(totalCompetitors * (advancementCondition.level / 100));
-    //                     filteredResults = results.slice(0, count);
-    //                 } else if (advancementCondition?.type === 'ranking') {
-    //                     filteredResults = results.slice(0, advancementCondition.level);
-    //                 } else {
-    //                     filteredResults = results;
-    //                 }
-
-    //                 // mapear los resultados para obtener solo los datos necesarios y agregar los datos del competidor
-
-    //                 filteredResults = filteredResults.map(result => {
-    //                     const { personId } = result;
-    //                     const competitor = data.persons.find(person => person.registrantId === personId);
-    //                     const timeLimit = round?.timeLimit?.centiseconds;
-    //                     const timeCutoff = round?.cutoff?.attemptResult;
-    //                     const numberOfAttempts = round?.cutoff?.numberOfAttempts;
-    //                     console.log(timeLimit, timeCutoff, 'timeLimit, timeCutoff', 'event', event.id, 'round', round.id, numberOfAttempts, 'numberOfAttempts')
-
-    //                     // obtener del competidor solo los datos necesarios nombre y wcaid
-    //                     const { name, wcaId } = competitor;
-    //                     return {
-    //                         numberOfAttempts,
-    //                         timeCutoff,
-    //                         timeLimit,
-    //                         personId,
-    //                         name,
-    //                         wcaId,
-    //                     };
-    //                 }
-
-    //                 );
-
-    //                 return {
-    //                     eventId: event.id,
-    //                     roundId: round.id,
-    //                     competitors: filteredResults,
-    //                 };
-    //             })
-    //         );
-
-    //         // quitar las rondas primeras '-r1'
-
-
-
-    //         // desde segunda ronda en adelante
-    //         // setRoundsData(newRoundsData.filter(round => !round.roundId.includes('-r1')));
-
-    //         setRoundsData(newRoundsData);
-
-    //     }
-    // }, [data]);
+    const { data: wcif, isLoading , refetch } = useCompetition(competition_id);
+    // const data = CubiKoronel;
+    // const isLoading = false;
 
     const roundText = t("round")
 
-    useEffect(() => {
-        if (data) {
-            const newRoundsData = data.events.flatMap(event => {
-                // Mapear las rondas para acceder a ellas fácilmente
-                const roundsByEvent = event.rounds.reduce((acc, round) => {
-                    acc[round.id] = round;
-                    return acc;
-                }, {});
-
-                return event.rounds.map((round) => {
-                    const { advancementCondition, results } = round;
-
-                    let filteredResults = [];
-
-                    // Obtener la ronda anterior
-                    const previousRoundId = `r${parseInt(round.id.split('-r')[1]) - 1}`;
-                    const previousRound = roundsByEvent[`${event.id}-${previousRoundId}`];
-
-
-                    if (previousRound && previousRound.advancementCondition) {
-                        const previousResults = previousRound.results;
-                        // console.log(round.id, 'round.id')
-                        // console.log(advancementCondition.level, 'advancementCondition.level')
-                        // console.log(advancementCondition.type, 'advancementCondition.type')
-                        // console.log(previousResults.length, 'previousResults.length')
-                        if (previousRound.advancementCondition.type === 'percent') {
-                            const totalCompetitors = previousResults.length;
-                            const count = Math.trunc(totalCompetitors * (previousRound.advancementCondition.level / 100));
-                            console.log(count)
-                            filteredResults = previousResults.slice(0, count);
-                        } else if (previousRound.advancementCondition.type === 'ranking') {
-                            filteredResults = previousResults.slice(0, previousRound.advancementCondition.level);
-                        }
-                    } else {
-                        filteredResults = results;
-                    }
-
-                    // Mapear los resultados para obtener solo los datos necesarios y agregar los datos del competidor
-                    filteredResults = filteredResults.map(result => {
-                        const { personId } = result;
-                        const competitor = data.persons.find(person => person.registrantId === personId);
-                        const timeLimit = round?.timeLimit?.centiseconds;
-                        const timeCutoff = round?.cutoff?.attemptResult;
-                        const numberOfAttempts = round?.cutoff?.numberOfAttempts;
-
-                        // Obtener del competidor solo los datos necesarios: nombre y wcaId
-                        const { name, wcaId } = competitor;
-                        return {
-                            numberOfAttempts,
-                            timeCutoff,
-                            timeLimit,
-                            personId,
-                            name,
-                            wcaId,
-                        };
-                    });
-
-
-                    return {
-                        eventId: event.id,
-                        roundId: round.id,
-                        competitors: filteredResults,
-                    };
-                });
-            });
-
-            console.log(newRoundsData);
-
-            // setRoundsData(newRoundsData.filter(round => !round.roundId.includes('-r1') && round.competitors.length > 0));
-            // Guardar los datos de las rondas
-            setRoundsData(newRoundsData);
-        }
-
-        const categories = data?.events.map(event => {
-            return {
-                id: event.id,
-            };
-        });
-
-        console.log(categories)
-        setCategories(categories);
-
-
-    }, [data]);
-
-
-
-
-
-    if (isLoading) {
+    if (isLoading || loading) {
         return <Loader />;
     }
 
@@ -222,36 +67,101 @@ const ScoreCard = () => {
         }
     };
 
-    const handleDownloadPDF = async (eventId, roundId, competitors) => {
 
-        const round = parseInt(roundId.split('-r')[1]);
+    const handleGroupSplit = (e) => {
+        setLoading(true);
+        setGroupSplit(parseInt(e.target.value));
+        setLoading(false);
+    }
+
+    const handleSyncResult = async () => {
+        setLoading(true); // Mostrar el loader
+        try {
+            await refetch(); // Esperar a que se complete el refetch
+        } catch (error) {
+            console.error("Error al hacer refetch", error);
+        } finally {
+            setLoading(false); // Ocultar el loader
+        }
+    }
+
+
+    const getNameCompetitor = (personId) => {
+        const competitor = wcif.persons.find(person => person.registrantId === personId);
+        return {
+            name: competitor.name,
+            wcaId: competitor.wcaId,
+            registrantId: competitor.registrantId,
+        };
+    }
+
+    const printScoreCard = async ( eventId, eventName, round, groupSplit) => {
+        const competitors = wcif.events.find(event => event.id === eventId).rounds[round].results;
+
+        const competitorsData = competitors.map(({ personId }) => getNameCompetitor(personId));
+
+        let timeLimit = wcif.events.find(event => event.id === eventId).rounds[round]?.timeLimit?.centiseconds;
+
+        let timeCutoff = wcif.events.find(event => event.id === eventId).rounds[round]?.cutoff?.attemptResult;
+
+        const numberOfAttempts = wcif.events.find(event => event.id === eventId).rounds[round]?.cutoff?.numberOfAttempts;
+
+        // sihay timeLimit, timeCutoff o numberOfAttempts, se convierten a formato de tiempo centisegundos
+        if (timeLimit) {
+            timeLimit = formatCentiseconds(timeLimit);
+        }
+
+        if (timeCutoff) {
+            timeCutoff = formatCentiseconds(timeCutoff);
+        }
+
+        // separar los grupos de manera aleatoria y agregarles un número de grupo a cada competidor
+
+
+        const totalCompetitors = competitorsData.length;
+
+        const competitorsPerGroup = Math.ceil(totalCompetitors / groupSplit);
+
+        const shuffledCompetitors = competitorsData.sort(() => Math.random() - 0.5);
+
+        const groupedCompetitors = shuffledCompetitors.map((competitor, index) => ({
+            ...competitor,
+            groupNumber: Math.floor(index / competitorsPerGroup) + 1
+        }));
+
+        console.log(groupedCompetitors);
+
+
+
 
 
         const doc = <PDF
             imageUrl={imageUrl}
-            competitors={competitors}
-            tournamentName={data.name}
+            competitors={groupedCompetitors}
+            tournamentName={wcif.name}
             category={eventId}
-            totalGroups={numberOfGroups}
-            round={round}
+            categoryName={eventName}
+            totalGroups={groupSplit}
+            round={round + 1}
             i18n={i18n}
+            timeLimit={timeLimit ? timeLimit : null}
+            timeCutoff={timeCutoff ? timeCutoff : null}
+            numberOfAttempts={numberOfAttempts ? numberOfAttempts : null}
         />;
 
-        const pdfBlob = await pdf(doc).toBlob();
-        const url = URL.createObjectURL(pdfBlob);
+        try {
+            const pdfBlob = await pdf(doc).toBlob();
+            const url = URL.createObjectURL(pdfBlob);
 
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = `scoreCard-${eventId}-Round-${roundId}.pdf`;
-        link.click();
-    };
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `scoreCard-${eventId}-Round-${round + 1}.pdf`;
+            link.click();
 
-    const handleNumberOfGroups = (e) => {
-        setNumberOfGroups(e.target.value);
-    }
-
-    const handleGenerateScoreCards = () => {
-        setShowScoreCard(!showScoreCard);
+            URL.revokeObjectURL(url);
+        } catch (error) {
+            console.error('Error generating PDF:', error);
+        }
     }
 
 
@@ -259,157 +169,114 @@ const ScoreCard = () => {
     return (
         <div className="container mx-auto px-4 animate-fade-in animate-delay-200 animate-duration-slow">
 
-            <h1 className="text-2xl font-bold mb-4">Score Card</h1>
+            <h1 className="text-2xl font-bold mb-4">ScoreCard {wcif.name} ( {wcif.events.length} {t("events")} )</h1>
 
-            {/* <input
-                type="file"
-                accept="image/*"
-                onChange={handleImageUpload}
-                className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4
-               file:rounded-full file:border-0
-               file:text-sm file:font-semibold
-               file:bg-blue-50 file:text-blue-700
-               hover:file:bg-blue-100"
-            /> */}
-            <input
-                type="file"
-                accept=".png"
-                className="hidden"
-                id="imageInput"
-            />
-            <label
-                htmlFor="imageInput"
-                className="cursor-pointer px-4 py-2 rounded-lg bg-blue-500 text-white font-semibold hover:bg-blue-600 inline-block min-w-min"
-                title={t("image-title")}
-            >
-                {t("select-image")}
-            </label>
-            {imageUrl && (
-                <div className="flex flex-col items-center">
-                    <button
-                        className="cursor-pointer text-red-500 mt-2"
-                        onClick={() => setImageUrl(null)}
+            <div className="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4">
+                {/* Selector de Imagen */}
+                <div className="flex items-center space-x-2">
+                    <input
+                        type="file"
+                        accept=".png"
+                        className="hidden"
+                        id="imageInput"
+                        onChange={handleImageUpload}
+                    />
+                    <label
+                        htmlFor="imageInput"
+                        className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded flex items-center gap-2 transition-colors duration-300"
+                        title={t("image-title")}
                     >
-                        xd
-                        <ClearIcon />
-                    </button>
+                        <div className="flex items-center gap-2">
+                            <UploadIcon /> {t("select-image")}
+                        </div>
+                    </label>
+                    {imageUrl && (
+                        <button
+                            className="cursor-pointer text-red-500"
+                            onClick={() => setImageUrl(null)}
+                            title={t("clear-image")}
+                        >
+                            <ClearIcon />
+                        </button>
+                    )}
                 </div>
-            )}
 
+                {/* Input de Cantidad de Grupos */}
+                <div className="flex items-center space-x-2">
+                    <label htmlFor="numberOfGroups" className="text-gray-700 text-sm font-bold">
+                        {t("group-split")}
+                    </label>
+                    <input
+                        defaultValue={2}
+                        type="number"
+                        id="numberOfGroups"
+                        min={1}
+                        step={1}
+                        placeholder="Cantidad de grupos"
+                        onChange={handleGroupSplit}
+                        className="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline w-20 sm:w-24"
+                    />
+                </div>
 
-            {/* input para ingresar cantidad de grupos  */}
-            <div className="mb-4">
-                <label htmlFor="numberOfGroups" className="block text-gray-700 text-sm font-bold mb-2">
-                    Cantidad de Grupos
-                </label>
-                <input
-                    type="number"
-                    id="numberOfGroups"
-                    min={1}
-                    placeholder="Cantidad de grupos"
-                    onChange={handleNumberOfGroups}
-                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                />
+                {/* Botón de Sincronizar */}
+                <button
+                    onClick={handleSyncResult}
+                    className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded flex items-center gap-2 transition-colors duration-300"
+                >
+                    <SyncIcon /> {t("sync")}
+                </button>
             </div>
 
-            <button
-                onClick={handleGenerateScoreCards}
-                className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mt-4"
-            >
-                Generar ScoreCards
-            </button>
 
 
-            <br /><br />
-
-            {/* {
-                showScoreCard && (
-                    <div className="flex flex-col md:flex-row">
-                        <div className="md:w-1/4 p-4">
-                            <h2 className="text-lg font-bold mb-2">Categorías</h2>
-                            <ul>
-                                {categories.map((category, index) => (
-                                    <li key={index} className="mb-2">
-                                        <span className="text-gray-700">{category.id}</span>
-                                        <ul className="ml-4 mt-2">
-                                            {roundsData
-                                                .filter((round) => round.eventId === category.id)
-                                                .map(({ roundName, roundId, competitors }, index) => (
-                                                    <li key={index} className="text-blue-500 hover:underline">
-                                                        <button
-                                                            onClick={() => handleDownloadPDF(category.id, roundId, competitors)}
-                                                        >
-                                                            {roundId}
-                                                        </button>
-                                                    </li>
-                                                ))}
-                                        </ul>
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
-                    </div>
-                )
-            } */}
             {
-                showScoreCard && (
-                    <div className="overflow-x-auto">
+                    <div className="overflow-x-auto pt-5">
                         <table className="min-w-full bg-white border border-gray-300 shadow-md rounded-lg">
-                           
                             <tbody>
-                                {categories.map((category, categoryIndex) => (
-                                    <tr key={categoryIndex} className="hover:bg-gray-50">
-                                        <td className="px-6 py-4 border-b border-gray-200 text-sm text-gray-900 font-medium">{t(category.id)}</td>
-                                        {roundsData
-                                            .filter((round) => round.eventId === category.id)
-                                            .map(({ roundId, competitors }, index) => (
-                                                <td key={index} className="px-6 py-4 border-b border-gray-200 text-center">
+                                {wcif.events.map((event, eventIndex) => (
+                                    <tr key={eventIndex} className="hover:bg-gray-50">
+                                        <td className="px-6 py-4 border-b border-gray-200 text-sm text-gray-900 font-medium">{t(event.id)}</td>
+                                        {/* <td>
+                                            <button
+                                                onClick={() => printScoreCard(data, event.id, 0, numberOfGroups)}
+                                                disabled={event.rounds[0]?.results?.length === 0}
+                                                className={`px-4 py-2 text-sm rounded-md transition bg-gray-300 text-gray-500 cursor-not-allowed`}
+                                            >
+                                                {roundText} {1}
+                                            </button>
+                                        </td>
+                                        <td>
+                                            <button
+                                                onClick={() => printScoreCard(data, event.id, 1, numberOfGroups)}
+                                                disabled={event.rounds[1]?.results?.length === 0}
+                                                className={`px-4 py-2 text-sm rounded-md transition bg-blue-500 text-white hover:bg-blue-600`}
+                                            >
+                                                {roundText} {2}
+                                            </button>
+                                        </td> */}
+
+                                        {[...Array(4).keys()].map((roundIndex) => (
+                                            <td key={roundIndex}>
+                                                {event.rounds.length > roundIndex && (
                                                     <button
-                                                        onClick={() => handleDownloadPDF(category.id, roundId, competitors)}
-                                                        disabled={roundId.includes('-r1')}
-                                                        className={`px-4 py-2 text-sm rounded-md transition ${roundId.includes('-r1')
-                                                                ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                                                                : 'bg-blue-500 text-white hover:bg-blue-600'
+                                                        onClick={() => printScoreCard(event.id, t(event.id), roundIndex, groupSplit)}
+                                                        disabled={event.rounds[roundIndex]?.results?.length === 0 || roundIndex === 0}
+                                                        className={`px-4 py-2 text-sm rounded-md transition ${roundIndex === 0 || event.rounds[roundIndex]?.results?.length === 0
+                                                            ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                                                            : 'bg-blue-500 text-white hover:bg-blue-600'
                                                             }`}
                                                     >
-                                                        {t("round")} {roundId.split('-r')[1]}
+                                                        {roundText} {roundIndex + 1}
                                                     </button>
-                                                </td>
-                                            ))}
+                                                )}
+                                            </td>
+                                        ))}
                                     </tr>
                                 ))}
                             </tbody>
                         </table>
                     </div>
-                )
             }
-
-
-
-            {/* <table className="min-w-full bg-white border border-gray-200">
-                <thead>
-                    <tr className="w-full bg-gray-100 border-b border-gray-200">
-                        <th className="px-4 py-2 text-left">Evento</th>
-                        <th className="px-4 py-2 text-left">Acción</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {roundsData?.map(({ eventId, roundId, competitors, roundName }, index) => (
-                        <tr key={index}>
-                            <td className="px-4 py-2 border-b border-gray-200">{eventId} {roundText} {roundId.split('-r')[1]}</td>
-                            <td className="px-4 py-2 border-b border-gray-200">
-                                <button
-                                    onClick={() => handleDownloadPDF(eventId, roundId, competitors)}
-                                    className="text-blue-500 hover:underline"
-                                >
-                                    Descargar PDF
-                                </button>
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table> */}
-
 
         </div>
     );
