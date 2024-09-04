@@ -22,8 +22,8 @@ const RouterApp = () => {
             <Route path="/" element={user ? <Competition /> : <Home />} />
             <Route path="/competitions" element={<ProtectedRoute><Competitions /></ProtectedRoute>} />
             <Route path="/competitions/:id" element={<ProtectedRoute><Competition /></ProtectedRoute>} />
-            {/* <Route path="/scoreCard" element={<ProtectedRoute><Competitions isScorecard /></ProtectedRoute>} />
-            <Route path="/scoreCard/:id" element={<ProtectedRoute><ScoreCard /></ProtectedRoute>} /> */}
+            <Route path="/scoreCard" element={<ProtectedRoute><Competitions isScorecard /></ProtectedRoute>} />
+            <Route path="/scoreCard/:id" element={<ProtectedRoute><ScoreCard /></ProtectedRoute>} />
             {/* <Route path="/PDF" element={<ProtectedRoute><ScoreCardPDF /></ProtectedRoute>} /> */}
 
 

@@ -71,7 +71,7 @@ const Sidebar = forwardRef(({ showNav, setShowNav }, ref) => {
               {t("contact")}
             </a>
           </li>
-          {/* <li>
+          <li>
             <a
               href="/scoreCard"
               className={`${location.pathname === "/scoreCard"
@@ -81,7 +81,7 @@ const Sidebar = forwardRef(({ showNav, setShowNav }, ref) => {
             >
               {t("score-card")}
             </a>
-          </li> */}
+          </li>
         </ul>
         {/*END OTHERS SECTION */}
       </section>
