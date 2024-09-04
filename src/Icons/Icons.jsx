@@ -92,3 +92,61 @@ export const ClearIcon = ({ className }) => (
     />
   </svg>
 );
+
+export const UploadIcon = ({ className }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    xmlSpace="preserve"
+    width={24}
+    height={24}
+    viewBox="0 0 374.116 374.116"
+  >
+    <path d="M344.058 207.506c-16.568 0-30 13.432-30 30v76.609h-254v-76.609c0-16.568-13.432-30-30-30-16.568 0-30 13.432-30 30v106.609c0 16.568 13.432 30 30 30h314c16.568 0 30-13.432 30-30V237.506c0-16.568-13.432-30-30-30z" />
+    <path d="m123.57 135.915 33.488-33.488v111.775c0 16.568 13.432 30 30 30 16.568 0 30-13.432 30-30V102.426l33.488 33.488c5.857 5.858 13.535 8.787 21.213 8.787 7.678 0 15.355-2.929 21.213-8.787 11.716-11.716 11.716-30.71 0-42.426l-84.701-84.7c-11.715-11.717-30.711-11.717-42.426 0L81.144 93.489c-11.716 11.716-11.716 30.71 0 42.426 11.715 11.716 30.711 11.716 42.426 0z" />
+  </svg>
+);
+
+
+export const SyncIcon = ({ className }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    className="icon flat-line"
+    data-name="Flat Line"
+    viewBox="0 0 24 24"
+    height={24}
+    width={24}
+  >
+    <path
+      d="M4 12a8 8 0 0 1 14.93-4"
+      style={{
+        fill: "none",
+        stroke: "#000",
+        strokeLinecap: "round",
+        strokeLinejoin: "round",
+        strokeWidth: 2,
+      }}
+    />
+    <path
+      d="M20 12a8 8 0 0 1-14.93 4M14 8h5V3"
+      data-name="primary"
+      style={{
+        fill: "none",
+        stroke: "#000",
+        strokeLinecap: "round",
+        strokeLinejoin: "round",
+        strokeWidth: 2,
+      }}
+    />
+    <path
+      d="M10 16H5v5"
+      data-name="primary"
+      style={{
+        fill: "none",
+        stroke: "#000",
+        strokeLinecap: "round",
+        strokeLinejoin: "round",
+        strokeWidth: 2,
+      }}
+    />
+  </svg>
+);
