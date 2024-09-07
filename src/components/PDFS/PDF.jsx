@@ -12,6 +12,7 @@ import React from 'react';
 
 
 
+
 const PDF = ({ imageUrl = null, competitors, tournamentName, category, categoryName, totalGroups, round, timeLimit, timeCutoff, numberOfAttempts, i18n }) => {
 
     const enText = {
@@ -63,17 +64,8 @@ const PDF = ({ imageUrl = null, competitors, tournamentName, category, categoryN
     }
 
 
-
-    console.log(i18n, 'i18n')
-
-
-
-    console.log(i18n.language, 'idioma')
-
-    // obtener las t aqui sin i18n
     const roundText = i18n.language === 'en' ? enText['round'] : esText['round'];
     const groupText = i18n.language === 'en' ? enText['group'] : esText['group'];
-    // const categoryText = i18n.language === 'en' ? enText[category] : esText[category];
     const ofText = i18n.language === 'en' ? enText['of'] : esText['of'];
     const resultText = i18n.language === 'en' ? 'Result DNF if' : 'Resultado DNF si';
     const continueIf = i18n.language === 'en' ? 'Continue if' : 'Continua si';
@@ -98,7 +90,6 @@ const PDF = ({ imageUrl = null, competitors, tournamentName, category, categoryN
 
 
     const mean_of_three_events = [
-        '333fm',
         '666',
         '777',
         '333bf',

@@ -75,13 +75,13 @@ const ScoreCard = () => {
     }
 
     const handleSyncResult = async () => {
-        setLoading(true); // Mostrar el loader
+        setLoading(true); 
         try {
-            await refetch(); // Esperar a que se complete el refetch
+            await refetch();
         } catch (error) {
             console.error("Error al hacer refetch", error);
         } finally {
-            setLoading(false); // Ocultar el loader
+            setLoading(false);
         }
     }
 
@@ -106,7 +106,6 @@ const ScoreCard = () => {
 
         const numberOfAttempts = wcif.events.find(event => event.id === eventId).rounds[round]?.cutoff?.numberOfAttempts;
 
-        // sihay timeLimit, timeCutoff o numberOfAttempts, se convierten a formato de tiempo centisegundos
         if (timeLimit) {
             timeLimit = formatCentiseconds(timeLimit);
         }
@@ -114,8 +113,6 @@ const ScoreCard = () => {
         if (timeCutoff) {
             timeCutoff = formatCentiseconds(timeCutoff);
         }
-
-        // separar los grupos de manera aleatoria y agregarles un número de grupo a cada competidor
 
 
         const totalCompetitors = competitorsData.length;
@@ -128,11 +125,6 @@ const ScoreCard = () => {
             ...competitor,
             groupNumber: Math.floor(index / competitorsPerGroup) + 1
         }));
-
-        console.log(groupedCompetitors);
-
-
-
 
 
         const doc = <PDF
@@ -155,7 +147,7 @@ const ScoreCard = () => {
 
             const link = document.createElement('a');
             link.href = url;
-            link.download = `scoreCard-${eventId}-Round-${round + 1}.pdf`;
+            link.download = `scoreCard-${eventId}-${roundText}${round + 1}.pdf`;
             link.click();
 
             URL.revokeObjectURL(url);
