@@ -239,6 +239,8 @@ const PersonTable = ({ wcif, events, groupsByEvent,fromWCIF }) => {
                 }
             }
         }
+
+        console.log(wcif)
     };
 
     const patchWCIF = () => {
