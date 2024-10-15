@@ -225,7 +225,7 @@ const PersonTable = ({ wcif, events, groupsByEvent,fromWCIF }) => {
         for (const venue of wcif.schedule.venues) {
             for (const room of venue.rooms) {
                 for (const activity of room.activities) {
-                    for (const childActivity of activity.childActivities.filter(a => a.activityCode.includes('-r1-g'))) {
+                    for (const childActivity of activity.childActivities.filter(a => a.activityCode.includes('-r1'))) {
 
                         console.log(childActivity)
                         const eventId = childActivity.activityCode.split('-')[0];

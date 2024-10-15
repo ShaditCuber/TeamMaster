@@ -114,26 +114,38 @@ function Competion() {
     }
   };
 
-  const copyEmails = (accepted = true) => {
-    const emails = [];
-    data.persons.forEach((person) => {
-      if (person.registration) {
-        if (accepted) {
-          if (person.registration.status === "accepted") {
-            emails.push(person.email);
-          }
-        } else {
-          if (person.registration.status !== "accepted") {
-            emails.push(person.email);
-          }
-        }
-      }
-    });
+  // const copyEmails = (accepted = true) => {
+  //   const emails = [];
+  //   data.persons.forEach((person) => {
+  //     if (person.registration) {
+  //       if (accepted) {
+  //         if (person.registration.status === "accepted") {
+  //           emails.push(person.email);
+  //         }
+  //       } else {
+  //         if (person.registration.status !== "accepted") {
+  //           emails.push(person.email);
+  //         }
+  //       }
+  //     }
+  //   });
 
-    navigator.clipboard.writeText(emails.join(", ")).then(function () {
-      toast.success(t("copy-emails"), { duration: 1500 });
-    });
+  //   navigator.clipboard.writeText(emails.join(", ")).then(function () {
+  //     toast.success(t("copy-emails"), { duration: 1500 });
+  //   });
+  // };
+  const copyEmails = (accepted = true) => {
+    const emails = data.persons
+      .filter(person => person.registration &&
+        (accepted ? person.registration.status === "accepted" : person.registration.status !== "accepted"))
+      .map(person => person.email);
+
+    navigator.clipboard.writeText(emails.join(", "))
+      .then(() => {
+        toast.success(t("copy-emails"), { duration: 1500 });
+      })
   };
+
 
   const saveWcif = () => {
 
@@ -161,7 +173,7 @@ function Competion() {
     console.log(data);
     setFromWCIF(true);
     setWcif(data);
-    setLoadingGroups(false);    
+    setLoadingGroups(false);
     setShowPersonTable(true);
     // Cargar datos de la WCA
   }
