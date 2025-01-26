@@ -81,7 +81,7 @@ const PersonTable = ({ wcif, events, groupsByEvent,fromWCIF }) => {
     const getEventGroup = (person, event,activityCode=0) => {
         if (!fromWCIF) {
             const key = `${person.name}-${event.id}`;
-            console.log(key)
+            // console.log(key) 
             return editedGroups[key] !== undefined
                 ? editedGroups[key]
                 : person[event.id] || "";
@@ -225,7 +225,7 @@ const PersonTable = ({ wcif, events, groupsByEvent,fromWCIF }) => {
         for (const venue of wcif.schedule.venues) {
             for (const room of venue.rooms) {
                 for (const activity of room.activities) {
-                    for (const childActivity of activity.childActivities.filter(a => a.activityCode.includes('-r1'))) {
+                    for (const childActivity of activity.childActivities.filter(a => a.activityCode.includes('-r1-g'))) {
 
                         console.log(childActivity)
                         const eventId = childActivity.activityCode.split('-')[0];
@@ -261,6 +261,8 @@ const PersonTable = ({ wcif, events, groupsByEvent,fromWCIF }) => {
             schedule: wcif.schedule,
             persons: persons
         }
+
+        console.log(wcifToSend,'wcifToSend')
 
         // mutateSaveWcif.mutate(wcif);
         mutateSaveWcif.mutate(wcifToSend);
